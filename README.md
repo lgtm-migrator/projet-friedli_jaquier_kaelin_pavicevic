@@ -1,21 +1,24 @@
 # Projet-DIL-Friedli_Jaquier_Kaelin_Pavicevic
 
 ## Introduction
-Il s'agit d'un projet en groupe de quatre personnes réalisé dans le cadre du cours DIL de la HEIG-VD. Le but de ce projet est de créer un générateur de site statique en Java. Les membres de ce projet sont : Lazar Pavicevic, Valentin Kaelin, Alexandre Jaquier et Jonathan Friedli.
+Il s'agit d'un projet en groupe de quatre personnes réalisé dans le cadre du cours DIL de la HEIG-VD. Le but de ce projet est de créer un générateur de site statique en Java en utilisant des outils et une méthodologie de travail adaptée pour une bonne collaboration. Les membres de ce projet sont : Lazar Pavicevic, Valentin Kaelin, Alexandre Jaquier et Jonathan Friedli.
 
 ## Méthodologie de travail
-Nous utilisons une méthodologie de travail agile. Chaque cycle de développement se fait en sprint d'une durée équivalente à celle des laboratoires liés au projet. Au début de chaque sprint, le groupe se concerte sur les tâches à effectuer et crée des issues sur le repository du projet qui font office de stories.
+Nous utilisons une méthodologie de travail agile proche du SCRUM. Chaque cycle de développement se fait en sprint d'une durée équivalente à celle des laboratoires liés au projet. Au début de chaque sprint, le groupe se concerte sur les tâches à effectuer et crée des issues sur le repository du projet qui font office de stories. Les issues sont ensuite assignées et la phase de développement commence. A la fin du sprint, le groupe passe en revue le travail réalisé et valide les objectifs visés.
 
-TODO
+Comme nous décrouvons des outils et des librairies au fur et à mesure que nous avançons dans le projet, nous profitons de faire du Pair Programming lorsqu'un membre du groupe rencontre un blocage dans ses assignments.
 
-Nous commençons par créer des `issues` puis nous les assignons à un membre du groupe. Une fois l'issue résolue, la personne crée une PR. Chaque PR doit être approuvée par un autre membre du groupe avant d'être merge sur la branche Main. Nous avons fait le choix de créer une branche par issue. Cela permet de créer facilement des PR afin de résoudre ces issues.
+Le rapport et les commentaires du code sont écrits en français, le reste (commits, issues, nom des branches, nom des variables, etc) sont en anglais.
 
-Le rapport et les commentaires du code seront écrit en français, le reste (commits, issues, nom des branches, nom des variables, etc) seront en anglais.
+// TODO Parler du manque de scrum master
 
-Nous avons également un Kanban, nous permettant de suivre l'avancée de nos issue, qui peut être trouvé [ici](https://github.com/dil-classroom/projet-friedli_jaquier_kaelin_pavicevic/projects/3)
+### Traitement des issues
+Nous commençons par créer des issues puis nous les assignons à un membre du groupe. Une fois l'issue résolue, la personne crée une Pull Request. Chaque Pull Request doit être approuvée par un autre membre du groupe avant d'être merge sur la branche Main. L'issue se clôt lorsque la Pull Request la concernant a été merge.
+
+Pour le bon suivi des issues, nous utilisons un [Kanban](https://github.com/dil-classroom/projet-friedli_jaquier_kaelin_pavicevic/projects/3) avec trois colonnes : To do, In progress et Done. Les issues sont automatiquement placées dans les bonnes colonnes en fonction de leur état de résolution.
 
 ### Description des commits
-Tous nos commits seront fait en anglais, en s'inspirant des [Conventionnal Commits](https://www.conventionalcommits.org/en/v1.0.0/).  
+Tous nos commits sont fait en anglais, en s'inspirant des [Conventionnal Commits](https://www.conventionalcommits.org/en/v1.0.0/).  
 Exemple: 
 ```
 feat: created commands clean and build for picocli  
