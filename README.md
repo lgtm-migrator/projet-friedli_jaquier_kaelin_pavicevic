@@ -4,21 +4,22 @@
 Il s'agit d'un projet en groupe de quatre personnes réalisé dans le cadre du cours DIL de la HEIG-VD. Le but de ce projet est de créer un générateur de site statique en Java en utilisant des outils et une méthodologie de travail adaptée pour une bonne collaboration. Les membres de ce projet sont : Lazar Pavicevic, Valentin Kaelin, Alexandre Jaquier et Jonathan Friedli.
 
 ## Méthodologie de travail
-Nous utilisons une méthodologie de travail agile proche du SCRUM. Chaque cycle de développement se fait en sprint d'une durée équivalente à celle des laboratoires liés au projet. Au début de chaque sprint, le groupe se concerte sur les tâches à effectuer et crée des issues sur le repository du projet qui font office de stories. Les issues sont ensuite assignées et la phase de développement commence. A la fin du sprint, le groupe passe en revue le travail réalisé et valide les objectifs visés.
+Nous utilisons une méthodologie de travail agile reprenant certains aspects provenant de l'Extreme programming et du SCRUM que nous trouvons intéressants.
 
-Comme nous décrouvons des outils et des librairies au fur et à mesure que nous avançons dans le projet, nous profitons de faire du Pair Programming lorsqu'un membre du groupe rencontre un blocage dans ses assignments.
+Chaque cycle de développement se fait en sprint d'une durée à peu près équivalente à celle des laboratoires liés au projet. Avant le début de chaque sprint, le groupe se concerte sur les tâches à effectuer et crée un Product backlog alimenté par des issues sur le repository du projet qui font office de stories. Il est important de noter que nous n'avons pas vraiment de Product owner à proprement parler. Les consignes des laboratoires substituent en quelque sorte cette fonction. 
 
-Le rapport et les commentaires du code sont écrits en français, le reste (commits, issues, nom des branches, nom des variables, etc) sont en anglais.
+Les issues sont ensuite assignées et la phase de développement commence. A la fin du sprint, le groupe passe en revue le travail réalisé et valide les objectifs visés.
 
-// TODO Parler du manque de scrum master
+Comme nous découvrons des outils et des librairies au fur et à mesure que nous avançons dans le projet, nous profitons aussi de faire de la programmation en pair lorsqu'un membre du groupe rencontre un blocage dans ses tâches.
+
+La rédaction du rapport et des commentaires du code se fait en français, le reste (commits, issues, nom des branches, nom des variables, etc) est en anglais.
 
 ### Traitement des issues
-Nous commençons par créer des issues puis nous les assignons à un membre du groupe. Une fois l'issue résolue, la personne crée une Pull Request. Chaque Pull Request doit être approuvée par un autre membre du groupe avant d'être merge sur la branche Main. L'issue se clôt lorsque la Pull Request la concernant a été merge.
+Nous commençons par créer des issues puis nous les assignons à un membre du groupe. Une fois l'issue résolue, la personne crée une pull request. Chaque pull request doit être approuvée par un autre membre du groupe avant d'être merge sur la branche Main. L'issue se clôture lorsque la pull request la concernant a été merge.
 
-Pour le bon suivi des issues, nous utilisons un [Kanban](https://github.com/dil-classroom/projet-friedli_jaquier_kaelin_pavicevic/projects/3) avec trois colonnes : To do, In progress et Done. Les issues sont automatiquement placées dans les bonnes colonnes en fonction de leur état de résolution.
-
+Pour le bon suivi des issues, nous utilisons un [Kanban](https://github.com/dil-classroom/projet-friedli_jaquier_kaelin_pavicevic/projects/3) avec trois colonnes : *To do, In progress* et *Done*. En utilisant les fonctionnalités de Github, nous pouvons lier les issues au Kanban et  mettre à jour leur état de résolution presque automatiquement. Une issue liée se trouve alors d'abord dans *To do*. Puis, une issue avec une draft de pull request se déplace ensuite sur *In Progress*. Finalement, une issue clôturée par une merged pull request finit dans la colonne *Done*.
 ### Description des commits
-Tous nos commits sont fait en anglais, en s'inspirant des [Conventionnal Commits](https://www.conventionalcommits.org/en/v1.0.0/).  
+Tous nos commits sont faits en anglais, en s'inspirant des [Conventionnal Commits](https://www.conventionalcommits.org/en/v1.0.0/).  
 Exemple: 
 ```
 feat: created commands clean and build for picocli  
