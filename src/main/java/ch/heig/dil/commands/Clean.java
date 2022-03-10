@@ -3,13 +3,10 @@ package ch.heig.dil.commands;
 
 import picocli.CommandLine;
 
-import java.util.concurrent.Callable;
-
-@CommandLine.Command(name = "clean", description = "Run the clean command")
-public class Clean implements Callable<Integer> {
+@CommandLine.Command(name = "clean", description = "Clean the generated content.")
+public class Clean implements Runnable {
     @Override
-    public Integer call() throws Exception {
+    public void run() {
         System.out.println("Clean command");
-        return 0;
     }
 }
