@@ -3,13 +3,10 @@ package ch.heig.dil.commands;
 
 import picocli.CommandLine;
 
-import java.util.concurrent.Callable;
-
-@CommandLine.Command(name = "new", description = "Run the new command")
-public class New implements Callable<Integer> {
+@CommandLine.Command(name = "new", description = "Init a new static website.")
+public class New implements Runnable {
     @Override
-    public Integer call() throws Exception {
+    public void run() {
         System.out.println("New command");
-        return 0;
     }
 }

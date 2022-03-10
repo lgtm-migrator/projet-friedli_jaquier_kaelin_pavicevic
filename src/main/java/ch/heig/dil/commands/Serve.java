@@ -3,13 +3,10 @@ package ch.heig.dil.commands;
 
 import picocli.CommandLine;
 
-import java.util.concurrent.Callable;
-
-@CommandLine.Command(name = "serve", description = "Run the serve command")
-public class Serve implements Callable<Integer> {
+@CommandLine.Command(name = "serve", description = "Serve the static website.")
+public class Serve implements Runnable {
     @Override
-    public Integer call() throws Exception {
+    public void run() {
         System.out.println("Serve command");
-        return 0;
     }
 }
