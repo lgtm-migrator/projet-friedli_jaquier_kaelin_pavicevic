@@ -3,6 +3,8 @@
 ## Introduction
 Ce projet a été réalisé dans le cadre du cours DIL de la HEIG-VD. Il s'agit d'une application en ligne de commande écrite en Java avec la librairie [Picocli](https://picocli.info/) qui permet de faire de la génération de sites statiques (SSG) à l'instar de [Gatsby](https://www.gatsbyjs.com/) ou [Hugo](https://gohugo.io/).
 
+Un portfolio décrivant notamment la méthodologie utilisée tout au long de ce projet ainsi que les divers choix de processus logiciels réalisés est disponible à l'adresse suivante: [Portfolio](https://github.com/dil-classroom/projet-friedli_jaquier_kaelin_pavicevic/wiki/Portfolio)
+
 ## Stack
 
 * [Java 11](https://adoptium.net/?variant=openjdk11&jvmVariant=hotspot)
@@ -24,7 +26,7 @@ Exemple :
 
 ```bash
 
-dil new
+static new
 
 ```
 
@@ -36,7 +38,7 @@ Exemple :
 
 ```bash
 
-dil clean
+static clean
 
 ```
 
@@ -48,7 +50,7 @@ Exemple :
 
 ```bash
 
-dil build
+static build
 
 ```
 
@@ -60,6 +62,6 @@ Exemple :
 
 ```bash
 
-dil serve
+static serve
 
 ```
