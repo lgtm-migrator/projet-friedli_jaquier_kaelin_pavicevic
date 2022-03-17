@@ -4,7 +4,7 @@ import ch.heig.dil.commands.*;
 
 @CommandLine.Command(
         mixinStandardHelpOptions = true,
-        name = "static",
+        name = "boomshot",
         version = "0.1",
         description = "A static site generator",
         subcommands = {
@@ -14,9 +14,9 @@ import ch.heig.dil.commands.*;
                 Serve.class
         }
 )
-public class Application implements Runnable {
+public class Boomshot implements Runnable {
     public static void main(String[] args) {
-        int exitCode = new CommandLine(new Application()).execute(args);
+        int exitCode = new CommandLine(new Boomshot()).execute(args);
         System.exit(exitCode);
     }
     
