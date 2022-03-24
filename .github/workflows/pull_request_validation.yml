@@ -8,8 +8,30 @@ on:
     branches:
       - fb-continuous-integration # For testing purpose, will be removed before PR merging
 jobs:
-  build:
-    runs-on: [ubuntu-latest, windows-latest, macos-latest]
+  build-verify-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Build & Verify with Maven
+        run: mvn --batch-mode --update-snapshots verify
+  build-verify-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Build & Verify with Maven
+        run: mvn --batch-mode --update-snapshots verify
+  build-verify-macos:
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
