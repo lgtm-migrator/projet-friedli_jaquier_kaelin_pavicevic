@@ -16,6 +16,38 @@ L'application met à disposition des commandes permettant de générer des sites
 
 TODO : A compléter lorsque les commandes ont été implémentées.
 
+## Installation
+
+**MacOS/Linux:**
+
+```bash
+mvn clean install && unzip -o target/boomshot.zip
+```
+
+**Windows:** Utiliser git bash ou WSL ou faire un ``mvn clean install`` et unzip 
+le dossier à la main.
+
+Afin d'ajouter l'application dans vos variables d'environnement:
+
+```bash
+export PATH=$PATH:`pwd`/boomshot/bin
+```
+
+En fermant votre shell et en exécutant la commande ``boomshot``, une sortie de la 
+sorte devrait apparaître:
+
+```bash
+Usage: boomshot [-hV] [COMMAND]
+A static site generator
+  -h, --help      Show this help message and exit.
+  -V, --version   Print version information and exit.
+Commands:
+  new    Init a new static website.
+  clean  Clean the generated content.
+  build  Build the static website.
+  serve  Serve the static website.
+```
+
 ### Commandes disponibles
 
 `new`
@@ -26,7 +58,7 @@ Exemple :
 
 ```bash
 
-static new
+boomshot new
 
 ```
 
@@ -38,7 +70,7 @@ Exemple :
 
 ```bash
 
-static clean
+boomshot clean
 
 ```
 
@@ -50,7 +82,7 @@ Exemple :
 
 ```bash
 
-static build
+boomshot build
 
 ```
 
@@ -62,6 +94,6 @@ Exemple :
 
 ```bash
 
-static serve
+boomshot serve
 
 ```

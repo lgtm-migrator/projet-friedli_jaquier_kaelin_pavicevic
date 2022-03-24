@@ -1,6 +1,9 @@
 package ch.heig.dil;
+
 import picocli.CommandLine;
 import ch.heig.dil.commands.*;
+
+import java.util.concurrent.Callable;
 
 @CommandLine.Command(
         mixinStandardHelpOptions = true,
@@ -14,14 +17,15 @@ import ch.heig.dil.commands.*;
                 Serve.class
         }
 )
-public class Boomshot implements Runnable {
+public class Boomshot implements Callable<Integer> {
     public static void main(String[] args) {
         int exitCode = new CommandLine(new Boomshot()).execute(args);
         System.exit(exitCode);
     }
     
     @Override
-    public void run() {
+    public Integer call() throws Exception {
         CommandLine.usage(this, System.out);
+        return 0;
     }
 }
