@@ -4,9 +4,6 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - fb-continuous-integration # For testing purpose, will be removed before PR merging
 jobs:
   build-verify-ubuntu:
     runs-on: ubuntu-latest
