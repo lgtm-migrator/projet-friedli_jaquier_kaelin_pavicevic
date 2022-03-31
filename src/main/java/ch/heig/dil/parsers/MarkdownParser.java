@@ -4,14 +4,33 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
+/**
+ * Classe permettant de transformer du text markdown en html
+ *
+ * @author Jonathan Friedli
+ */
 public class MarkdownParser {
+
+    /**
+     * Transformer une string de markdown à html
+     *
+     * @param line Chaine de caractère à transformer
+     * @return Chaine de caractère au format html
+     */
     public static String markdownToHtml(String line) {
         Parser parser = Parser.builder().build();
         Node document = parser.parse(line);
         HtmlRenderer renderer = HtmlRenderer.builder().build();
-        return renderer.render(document); // "<p>This is <em>Sparta</em></p>\n"
+        return renderer.render(document);
     }
 
+    /**
+     * Prend une string contenant une image au format markdown et la transforme en balise html
+     * contentant ladite image.
+     *
+     * @param line String en markdown
+     * @return La balise, contenant l'image, au format html
+     */
     public static String markdownToHtmlImage(String line) {
         String temp = markdownToHtml(line);
         temp = temp.substring(3);
