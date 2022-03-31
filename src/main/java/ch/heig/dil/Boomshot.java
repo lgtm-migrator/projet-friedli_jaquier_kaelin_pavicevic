@@ -2,6 +2,7 @@ package ch.heig.dil;
 
 import picocli.CommandLine;
 import ch.heig.dil.commands.*;
+import picocli.CommandLine;
 
 import java.util.concurrent.Callable;
 
@@ -22,7 +23,7 @@ public class Boomshot implements Callable<Integer> {
         int exitCode = new CommandLine(new Boomshot()).execute(args);
         System.exit(exitCode);
     }
-    
+
     @Override
     public Integer call() throws Exception {
         CommandLine.usage(this, System.out);

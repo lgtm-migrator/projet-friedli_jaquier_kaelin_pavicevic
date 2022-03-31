@@ -1,4 +1,3 @@
-
 package ch.heig.dil.commands;
 
 import picocli.CommandLine;

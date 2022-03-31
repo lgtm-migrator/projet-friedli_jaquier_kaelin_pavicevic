@@ -4,11 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import ch.heig.dil.Boomshot;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-
-
-import ch.heig.dil.Boomshot;
 import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
 
@@ -22,9 +20,11 @@ class BuildTest {
 
     @Test
     void exception() {
-        assertThrows(Exception.class, () -> {
-            throw new Exception();
-        });
+        assertThrows(
+                Exception.class,
+                () -> {
+                    throw new Exception();
+                });
     }
 
     @Test
@@ -35,5 +35,4 @@ class BuildTest {
             assertTrue((output.toString().contains("Build command")));
         }
     }
-
 }

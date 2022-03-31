@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-
 import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
 
@@ -20,9 +19,11 @@ class BoomshotTest {
 
     @Test
     void exception() {
-        assertThrows(Exception.class, () -> {
-            throw new Exception();
-        });
+        assertThrows(
+                Exception.class,
+                () -> {
+                    throw new Exception();
+                });
     }
 
     @Test
@@ -33,5 +34,4 @@ class BoomshotTest {
             assertTrue((output.toString().contains("A static site generator")));
         }
     }
-
 }
