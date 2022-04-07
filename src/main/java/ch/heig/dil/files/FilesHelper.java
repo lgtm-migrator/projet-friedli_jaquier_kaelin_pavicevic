@@ -29,4 +29,16 @@ public class FilesHelper {
         }
         return body.toString();
     }
+    public static void createFile(String path, String content) throws IOException {
+        Path file = Paths.get(path);
+        if (file.getParent() != null) {
+            Files.createDirectories(file.getParent());
+        }
+
+        try (BufferedWriter writer = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
+            writer.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
