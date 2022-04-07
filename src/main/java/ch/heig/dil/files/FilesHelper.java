@@ -12,7 +12,7 @@ public class FilesHelper {
         if (file.getParent() != null) {
             Files.createDirectories(file.getParent());
         }
-        
+
         try (BufferedWriter writer = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
             writer.write(content);
         } catch (IOException e) {
