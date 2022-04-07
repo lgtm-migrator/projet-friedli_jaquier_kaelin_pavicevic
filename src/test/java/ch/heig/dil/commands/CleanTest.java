@@ -30,6 +30,7 @@ class CleanTest {
 
         File site = new File("CleanTest");
         site.delete();
+        assertFalse(fileExist);
         assertEquals(0, exitCode);
     }
 }
