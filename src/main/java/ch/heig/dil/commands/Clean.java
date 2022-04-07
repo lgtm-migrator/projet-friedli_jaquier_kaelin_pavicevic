@@ -9,10 +9,11 @@ import picocli.CommandLine;
 public class Clean implements Callable<Integer> {
     @CommandLine.Parameters(index = "0", description = "Path to site to clean")
     String pathToSite;
+
     @Override
     public Integer call() throws IOException {
         File site = new File(System.getProperty("user.dir") + pathToSite + "/build");
-        if(!site.delete()){
+        if (!site.delete()) {
             throw new IOException("Clean command failed");
         }
         System.out.println("The site has been cleaned");
