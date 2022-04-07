@@ -9,14 +9,30 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
 
+/**
+ * Serveur web local permettant d'afficher le contenu du site statique
+ *
+ * @author Lazar Pavicevic
+ */
 public class LocalWebServer {
     private final HttpServer server;
     private final int port;
 
+    /**
+     * Constructeur par défaut bindant le serveur au port 8080.
+     *
+     * @throws IOException
+     */
     public LocalWebServer() throws IOException {
         this(8080);
     }
 
+    /**
+     * Constructeur permettant de choisir le port à bind.
+     *
+     * @param port Port à utiliser
+     * @throws IOException
+     */
     public LocalWebServer(int port) throws IOException {
         this.port = port;
         InetSocketAddress sockAddr = new InetSocketAddress(InetAddress.getLoopbackAddress(), port);
@@ -24,12 +40,16 @@ public class LocalWebServer {
         run();
     }
 
+    /** Arrête le serveur en attendant les requêtes en attente s'il y en a. */
     public void stop() {
         server.stop(0);
     }
 
+    /**
+     * Lance le serveur en créant des mapping entre les URIs possibles et les handlers qui vont
+     * traiter les requêtes
+     */
     private void run() {
-
         // TODO : Bind only on HTMLHandler
         server.createContext("/", new HelloHandler());
         server.setExecutor(null);
@@ -38,6 +58,7 @@ public class LocalWebServer {
         System.out.println("Listening on port " + port);
     }
 
+    /** Handler de test renvoyant une réponse GET 200 avec le contenu de l'URI utilisée */
     private static class HelloHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
@@ -53,6 +74,7 @@ public class LocalWebServer {
         }
     }
 
+    /** Handler renvoyant une réponse GET avec le contenu statique du site */
     private static class HTMLHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
