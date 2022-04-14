@@ -51,7 +51,7 @@ public class FilesHelper {
     public static void createFile(String path, String content) throws IOException {
         Path file = Paths.get(path);
         if (Files.exists(file)) {
-            throw new IOException("File already exist !");
+            throw new IOException("File already exists !");
         }
         if (file.getParent() != null) {
             Files.createDirectories(file.getParent());
