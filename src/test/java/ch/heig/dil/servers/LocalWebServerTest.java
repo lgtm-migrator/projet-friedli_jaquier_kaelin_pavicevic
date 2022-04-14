@@ -1,10 +1,12 @@
-package ch.heig.dil;
+package ch.heig.dil.servers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
+import ch.heig.dil.servers.LocalWebServer;
 import org.junit.jupiter.api.Test;
 
 public class LocalWebServerTest {

@@ -1,4 +1,4 @@
-package ch.heig.dil;
+package ch.heig.dil.servers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
