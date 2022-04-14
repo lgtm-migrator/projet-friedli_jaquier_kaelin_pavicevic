@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-
-import ch.heig.dil.servers.LocalWebServer;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import org.junit.jupiter.api.Test;
 
 public class LocalWebServerTest {
@@ -37,5 +39,25 @@ public class LocalWebServerTest {
         }
     }
 
-    // TODO : Basics GET requests then requesting files
+    @Test
+    void WebServerGivesStatusCode200ForIndex() {
+
+        var server = assertDoesNotThrow(() -> new LocalWebServer());
+        int port = 8080;
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request =
+                HttpRequest.newBuilder()
+                        .uri(URI.create("http://localhost:" + port + "/"))
+                        .header("Content-Type", "text/html")
+                        .GET()
+                        .build();
+
+        HttpResponse<String> response =
+                assertDoesNotThrow(
+                        () -> client.send(request, HttpResponse.BodyHandlers.ofString()));
+
+        System.out.println(response.body());
+        server.stop();
+        assertEquals(response.statusCode(), 200);
+    }
 }

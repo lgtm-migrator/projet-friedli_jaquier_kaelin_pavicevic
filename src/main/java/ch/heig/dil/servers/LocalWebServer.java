@@ -1,5 +1,6 @@
 package ch.heig.dil.servers;
 
+import ch.heig.dil.files.FilesHelper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -50,7 +51,7 @@ public class LocalWebServer {
      * traiter les requêtes
      */
     private void run() {
-        // TODO : Bind only on HTMLHandler
+        // TODO : Bind only on HTMLHandler when init and build commands are ready.
         server.createContext("/", new HelloHandler());
         server.setExecutor(null);
         server.start();
@@ -80,7 +81,26 @@ public class LocalWebServer {
         public void handle(HttpExchange exchange) throws IOException {
             URI requestURI = exchange.getRequestURI();
             if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
-                // TODO : Read html content and stream as response
+                String response, localPath = "testing"; // TODO : Get path when build command is ok.
+
+                try {
+                    if (requestURI.getPath().equals("/")
+                            || requestURI.getPath().equals("/index.html")) {
+                        response = FilesHelper.readFromFile(localPath + "/index.html");
+                    } else {
+                        response = FilesHelper.readFromFile(localPath + requestURI.getPath());
+                    }
+                    exchange.getResponseHeaders().set("Content-Type", "text/html");
+                    exchange.sendResponseHeaders(200, response.getBytes().length);
+                } catch (IOException e) {
+                    response = "File not found";
+                    exchange.getResponseHeaders().set("Content-Type", "text/html");
+                    exchange.sendResponseHeaders(404, response.getBytes().length);
+                }
+
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
             }
         }
     }
