@@ -77,12 +77,6 @@
             <artifactId>picocli</artifactId>
             <version>4.6.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-            <version>3.2.0</version>
-            <scope>test</scope>
-        </dependency>
 
         <!-- Testing -->
         <dependency>
@@ -104,12 +98,6 @@
             <groupId>org.commonmark</groupId>
             <artifactId>commonmark</artifactId>
             <version>0.18.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-            <version>3.2.0</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

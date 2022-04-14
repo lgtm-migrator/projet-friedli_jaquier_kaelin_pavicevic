@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 
 /**
  * Classe qui permet de lire un fichier ou d'écrire dans un fichier
@@ -62,5 +63,29 @@ public class FilesHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void copyDirectory(String sourceLocation, String destinationLocation)
+            throws IOException {
+        Files.walk(Paths.get(sourceLocation))
+                .forEach(
+                        source -> {
+                            Path destination =
+                                    Paths.get(
+                                            destinationLocation,
+                                            source.toString().substring(sourceLocation.length()));
+                            try {
+                                Files.copy(source, destination);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+    }
+
+    public static void deleteDirectory(String directory) throws IOException {
+        Files.walk(Paths.get(directory))
+                .sorted(Comparator.reverseOrder())
+                .map(Path::toFile)
+                .forEach(File::delete);
     }
 }
