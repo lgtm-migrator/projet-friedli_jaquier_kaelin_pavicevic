@@ -20,6 +20,11 @@ public class LocalWebServerTest {
     }
 
     @Test
+    void ConstructorThrows() {
+        assertThrows(RuntimeException.class, () -> new LocalWebServer(-1000));
+    }
+
+    @Test
     void WebServerIsListening() throws IOException {
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             System.setOut(new PrintStream(output));
