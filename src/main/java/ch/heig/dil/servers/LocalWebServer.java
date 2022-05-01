@@ -20,7 +20,8 @@ public class LocalWebServer {
     }
 
     /**
-     * Constructeur permettant seuleument de choisir le port à bind et utilise le répertoir "public.
+     * Constructeur permettant seuleument de choisir le port à bind et utilise le répertoir
+     * "public".
      *
      * @param port Port à utiliser
      */
@@ -40,27 +41,32 @@ public class LocalWebServer {
     public LocalWebServer(int port, String directory)
             throws IllegalArgumentException, JavalinException {
         if (port < 1) throw new IllegalArgumentException("Error : invalid port");
-        System.out.println("Listening on port " + port);
         server =
                 Javalin.create(
-                                config -> {
-                                    Log.getProperties()
-                                            .setProperty("org.eclipse.jetty.LEVEL", "OFF");
-                                    Log.getProperties()
-                                            .setProperty(
-                                                    "org.eclipse.jetty.util.log.announce", "false");
-                                    JavalinLogger.startupInfo = false;
-                                    JavalinLogger.enabled = false;
-                                    config.addStaticFiles(
-                                            staticFileConfig -> {
-                                                staticFileConfig.directory = directory;
-                                                staticFileConfig.location = Location.EXTERNAL;
-                                            });
-                                })
-                        .start(port);
+                        config -> {
+                            Log.getProperties().setProperty("org.eclipse.jetty.LEVEL", "OFF");
+                            Log.getProperties()
+                                    .setProperty("org.eclipse.jetty.util.log.announce", "false");
+                            JavalinLogger.startupInfo = false;
+                            JavalinLogger.enabled = false;
+                            config.addStaticFiles(
+                                    staticFileConfig -> {
+                                        staticFileConfig.directory = directory;
+                                        staticFileConfig.location = Location.EXTERNAL;
+                                    });
+                        });
     }
 
+    /** Démarre le serveur sur le port voulu */
+    public void start() {
+        server.start(server.port());
+        System.out.println("Listening on http://localhost:" + server.port());
+    }
+
+    /** Arrête le serveur */
     public void stop() {
+        System.out.println("Webserver shutting down...");
         server.stop();
+        System.out.println("Webserver is shut down.");
     }
 }

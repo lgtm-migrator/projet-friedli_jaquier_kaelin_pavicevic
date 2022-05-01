@@ -17,7 +17,6 @@ public class LocalWebServerTest {
     @Test
     void ConstructorDoesntThrow() {
         var server = assertDoesNotThrow(() -> new LocalWebServer());
-        server.stop();
     }
 
     @Test
@@ -35,16 +34,17 @@ public class LocalWebServerTest {
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             System.setOut(new PrintStream(output));
             var server = assertDoesNotThrow(() -> new LocalWebServer());
-            assertTrue((output.toString().contains("Listening on port 8080")));
+            server.start();
+            assertTrue((output.toString().contains("Listening on http://localhost:8080")));
             server.stop();
         }
     }
 
     @Test
     void ServerGivesStatusCode200ForIndex() {
-
-        var server = assertDoesNotThrow(() -> new LocalWebServer());
         int port = 8080;
+        var server = assertDoesNotThrow(() -> new LocalWebServer(port));
+        server.start();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request =
                 HttpRequest.newBuilder()
@@ -65,8 +65,9 @@ public class LocalWebServerTest {
     @Test
     void ServerGivesStatusCode200ForNestedPage() {
 
-        var server = assertDoesNotThrow(() -> new LocalWebServer());
         int port = 8080;
+        var server = assertDoesNotThrow(() -> new LocalWebServer(port));
+        server.start();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request =
                 HttpRequest.newBuilder()
@@ -87,8 +88,9 @@ public class LocalWebServerTest {
     @Test
     void ServerGivesStatusCode404() {
 
-        var server = assertDoesNotThrow(() -> new LocalWebServer());
         int port = 8080;
+        var server = assertDoesNotThrow(() -> new LocalWebServer(port));
+        server.start();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request =
                 HttpRequest.newBuilder()
