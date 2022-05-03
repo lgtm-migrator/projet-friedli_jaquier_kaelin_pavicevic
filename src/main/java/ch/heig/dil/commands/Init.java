@@ -1,11 +1,15 @@
 package ch.heig.dil.commands;
 
-import ch.heig.dil.Boomshot;
 import ch.heig.dil.files.FilesHelper;
-import java.io.IOException;
+import java.nio.file.Path;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
 
+/**
+ * Initialise le dossier d'un nouveau site avec un contenu par défaut
+ *
+ * @author Valentin Kaelin
+ */
 @CommandLine.Command(name = "init", description = "Init a new static website.")
 public class Init implements Callable<Integer> {
     private static final String TEMPLATES_PATH = "/templates/init";
@@ -14,12 +18,14 @@ public class Init implements Callable<Integer> {
     String path;
 
     @Override
-    public Integer call() throws IOException {
-        var templateRessource = Boomshot.class.getResource(TEMPLATES_PATH);
-        if (templateRessource == null) return 1;
-
-        FilesHelper.copyDirectory(templateRessource.getPath(), path);
-        System.out.println("Website initialized.");
+    public Integer call() {
+        try {
+            Path templateRessource = FilesHelper.getRessourcePath(TEMPLATES_PATH);
+            FilesHelper.copyDirectory(templateRessource.toString(), path);
+            System.out.println("Website initialized.");
+        } catch (Exception ex) {
+            return 1;
+        }
         return 0;
     }
 }

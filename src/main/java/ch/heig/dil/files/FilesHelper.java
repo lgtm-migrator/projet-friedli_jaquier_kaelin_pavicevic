@@ -1,6 +1,9 @@
 package ch.heig.dil.files;
 
+import ch.heig.dil.Boomshot;
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -65,6 +68,13 @@ public class FilesHelper {
         }
     }
 
+    /**
+     * Copie un dossier récursivement
+     *
+     * @param sourceLocation : dossier source
+     * @param destinationLocation : dossier de destination
+     * @throws IOException en cas d'erreur lors de la copie d'un fichier
+     */
     public static void copyDirectory(String sourceLocation, String destinationLocation)
             throws IOException {
         Files.walk(Paths.get(sourceLocation))
@@ -82,10 +92,31 @@ public class FilesHelper {
                         });
     }
 
+    /**
+     * Supprime récursivement un dossier
+     *
+     * @param directory : dossier à supprimer
+     * @throws IOException en cas de soucis lors de la suppression
+     */
     public static void deleteDirectory(String directory) throws IOException {
         Files.walk(Paths.get(directory))
                 .sorted(Comparator.reverseOrder())
                 .map(Path::toFile)
                 .forEach(File::delete);
+    }
+
+    /**
+     * Retourne le path d'une ressource souhaitée envoyée via une chaîne de caractère
+     *
+     * @param path : ressource à chercher
+     * @return l'object Path de la ressource
+     * @throws URISyntaxException si la ressource est invalide
+     */
+    public static Path getRessourcePath(String path) throws URISyntaxException {
+        URL templateRessource = Boomshot.class.getResource(path);
+        if (templateRessource == null) {
+            throw new URISyntaxException(path, "Invalid ressource path");
+        }
+        return Paths.get(templateRessource.toURI());
     }
 }
