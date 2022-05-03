@@ -9,7 +9,7 @@ import picocli.CommandLine;
         name = "boomshot",
         version = "0.1",
         description = "A static site generator",
-        subcommands = {New.class, Clean.class, Build.class, Serve.class})
+        subcommands = {Init.class, Clean.class, Build.class, Serve.class})
 public class Boomshot implements Callable<Integer> {
     public static void main(String[] args) {
         int exitCode = new CommandLine(new Boomshot()).execute(args);

@@ -1,10 +1,14 @@
 package ch.heig.dil.files;
 
+import ch.heig.dil.Boomshot;
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 
 /**
  * Classe qui permet de lire un fichier ou d'écrire dans un fichier
@@ -51,7 +55,7 @@ public class FilesHelper {
     public static void createFile(String path, String content) throws IOException {
         Path file = Paths.get(path);
         if (Files.exists(file)) {
-            throw new IOException("File already exist !");
+            throw new IOException("File already exists !");
         }
         if (file.getParent() != null) {
             Files.createDirectories(file.getParent());
@@ -62,5 +66,57 @@ public class FilesHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Copie un dossier récursivement
+     *
+     * @param sourceLocation : dossier source
+     * @param destinationLocation : dossier de destination
+     * @throws IOException en cas d'erreur lors de la copie d'un fichier
+     */
+    public static void copyDirectory(String sourceLocation, String destinationLocation)
+            throws IOException {
+        Files.walk(Paths.get(sourceLocation))
+                .forEach(
+                        source -> {
+                            Path destination =
+                                    Paths.get(
+                                            destinationLocation,
+                                            source.toString().substring(sourceLocation.length()));
+                            try {
+                                Files.copy(source, destination);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+    }
+
+    /**
+     * Supprime récursivement un dossier
+     *
+     * @param directory : dossier à supprimer
+     * @throws IOException en cas de soucis lors de la suppression
+     */
+    public static void deleteDirectory(String directory) throws IOException {
+        Files.walk(Paths.get(directory))
+                .sorted(Comparator.reverseOrder())
+                .map(Path::toFile)
+                .forEach(File::delete);
+    }
+
+    /**
+     * Retourne le path d'une ressource souhaitée envoyée via une chaîne de caractère
+     *
+     * @param path : ressource à chercher
+     * @return l'object Path de la ressource
+     * @throws URISyntaxException si la ressource est invalide
+     */
+    public static Path getRessourcePath(String path) throws URISyntaxException {
+        URL templateRessource = Boomshot.class.getResource(path);
+        if (templateRessource == null) {
+            throw new URISyntaxException(path, "Invalid ressource path");
+        }
+        return Paths.get(templateRessource.toURI());
     }
 }
