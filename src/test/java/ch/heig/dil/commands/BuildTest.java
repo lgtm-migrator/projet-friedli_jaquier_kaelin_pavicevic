@@ -11,7 +11,7 @@ import picocli.CommandLine;
 
 class BuildTest {
     private static final String INIT_FOLDER = "./test-build";
-    private static final String BUILD_FOLDER = "build";
+    private static final String BUILD_FOLDER = "./build";
 
     /** Crée le dossier de test avant chaque test */
     @BeforeEach
