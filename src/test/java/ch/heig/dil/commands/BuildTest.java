@@ -62,9 +62,11 @@ class BuildTest {
 
     @Test
     void testBuildOnNotInitializedWebsite() {
-        String[] args = new String[] {"invalid-path-to-static-website"};
+        String invalidPath = "invalid-path-to-static-website";
+        String[] args = new String[] {invalidPath};
         CommandLine cmd = new CommandLine(new Build());
-        cmd.execute(args);
-        assertThrows(IOException.class, () -> cmd.execute(args));
+        int exitCode = cmd.execute(args);
+        assertFalse(new File(invalidPath).exists());
+        assertEquals(exitCode, CommandLine.ExitCode.SOFTWARE);
     }
 }
