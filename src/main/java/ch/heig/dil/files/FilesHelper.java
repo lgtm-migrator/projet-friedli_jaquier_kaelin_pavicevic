@@ -69,6 +69,17 @@ public class FilesHelper {
     }
 
     /**
+     * Crée un dossier en supprimant le contenu précédent si présent
+     *
+     * @param path : chemin du dossier
+     * @throws IOException en cas d'erreur lors de la suppression ou création du dossier
+     */
+    public static void cleanDirectoy(String path) throws IOException {
+        if (new File(path).exists()) deleteDirectory(path);
+        Files.createDirectories(Path.of(path));
+    }
+
+    /**
      * Copie un dossier récursivement
      *
      * @param sourceLocation : dossier source

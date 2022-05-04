@@ -24,3 +24,7 @@ boomshot/
 
 # Debug
 tmp/
+
+# Test website
+mywebsite/
+build/
