@@ -2,6 +2,9 @@ package ch.heig.dil.servers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import ch.heig.dil.commands.Build;
+import ch.heig.dil.commands.Init;
+import ch.heig.dil.files.FilesHelper;
 import io.javalin.core.util.JavalinException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,18 +13,49 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import picocli.CommandLine;
 
 public class LocalWebServerTest {
+    private static final String INIT_FOLDER = "./test-build";
+    private static final String BUILD_FOLDER = "./build";
+
+    /** Crée le dossier de test avant chaque test */
+    @BeforeEach
+    protected void setup() {
+        try {
+            FilesHelper.deleteDirectory(BUILD_FOLDER);
+            FilesHelper.deleteDirectory(INIT_FOLDER);
+        } catch (Exception ignored) {
+        }
+        String[] args = new String[] {INIT_FOLDER};
+        CommandLine cmd = new CommandLine(new Init());
+        cmd.execute(args);
+        cmd = new CommandLine(new Build());
+        cmd.execute(args);
+    }
+
+    /**
+     * Supprime le dossier de test après chaque test
+     *
+     * @throws IOException si une erreur apparait lors de la suppression du dossier
+     */
+    @AfterEach
+    protected void clean() throws IOException {
+        FilesHelper.deleteDirectory(INIT_FOLDER);
+        FilesHelper.deleteDirectory(BUILD_FOLDER);
+    }
 
     @Test
     void ConstructorDoesntThrow() {
-        var server = assertDoesNotThrow(() -> new LocalWebServer());
+        var server = assertDoesNotThrow(() -> new LocalWebServer(BUILD_FOLDER));
     }
 
     @Test
     void ConstructorThrowsIllegalArgument() {
-        assertThrows(IllegalArgumentException.class, () -> new LocalWebServer(-1000, "public"));
+        assertThrows(IllegalArgumentException.class, () -> new LocalWebServer(-1000, BUILD_FOLDER));
     }
 
     @Test
@@ -33,7 +67,7 @@ public class LocalWebServerTest {
     void WebServerIsListening() throws IOException {
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             System.setOut(new PrintStream(output));
-            var server = assertDoesNotThrow(() -> new LocalWebServer());
+            var server = assertDoesNotThrow(() -> new LocalWebServer(BUILD_FOLDER));
             server.start();
             assertTrue((output.toString().contains("Listening on http://localhost:8080")));
             server.stop();
@@ -43,7 +77,7 @@ public class LocalWebServerTest {
     @Test
     void ServerGivesStatusCode200ForIndex() {
         int port = 8080;
-        var server = assertDoesNotThrow(() -> new LocalWebServer(port));
+        var server = assertDoesNotThrow(() -> new LocalWebServer(port, BUILD_FOLDER));
         server.start();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request =
@@ -66,12 +100,12 @@ public class LocalWebServerTest {
     void ServerGivesStatusCode200ForNestedPage() {
 
         int port = 8080;
-        var server = assertDoesNotThrow(() -> new LocalWebServer(port));
+        var server = assertDoesNotThrow(() -> new LocalWebServer(port, BUILD_FOLDER));
         server.start();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request =
                 HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:" + port + "/nested/page.html"))
+                        .uri(URI.create("http://localhost:" + port + "/pages/page.html"))
                         .header("Content-Type", "text/html")
                         .GET()
                         .build();
@@ -89,7 +123,7 @@ public class LocalWebServerTest {
     void ServerGivesStatusCode404() {
 
         int port = 8080;
-        var server = assertDoesNotThrow(() -> new LocalWebServer(port));
+        var server = assertDoesNotThrow(() -> new LocalWebServer(port, BUILD_FOLDER));
         server.start();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request =

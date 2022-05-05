@@ -12,11 +12,15 @@ import picocli.CommandLine;
 @CommandLine.Command(name = "serve", description = "Serve the static website.")
 public class Serve implements Callable<Integer> {
 
+    @CommandLine.Parameters(paramLabel = "PATH", description = "The path of the build site to serve")
+    public Path path;
+
     @Override
     public Integer call() throws IllegalArgumentException, JavalinException {
-        Path path = Paths.get("public");
+        new CommandLine(new Build()).execute(path.toString());
 
-        // TODO : A changer quand build est implémenté
+        // TODO : attente Template engine: use handlebars to inject variables #39 pour avoir build dans init path
+        path = Paths.get(path.toString(), "/build");
         if (!Files.isDirectory(path)) {
             System.err.println("The directory doesn't exist.");
             return CommandLine.ExitCode.USAGE;

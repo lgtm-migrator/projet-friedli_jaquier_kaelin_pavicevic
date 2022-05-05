@@ -14,19 +14,13 @@ import org.eclipse.jetty.util.log.Log;
 public class LocalWebServer {
     private final Javalin server;
 
-    /** Constructeur par défaut utilisant le port 8080 et le répertoir "public". */
-    public LocalWebServer() {
-        this(8080);
-    }
-
     /**
-     * Constructeur permettant seuleument de choisir le port à bind et utilise le répertoir
-     * "public".
+     * Constructeur permettant seuleument de choisir le directory à serve avec un port par défaut
      *
-     * @param port Port à utiliser
+     * @param directory Dossier contenant les pages statiques à afficher
      */
-    public LocalWebServer(int port) {
-        this(port, "public");
+    public LocalWebServer(String directory) {
+        this(8080, directory);
     }
 
     /**
