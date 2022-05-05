@@ -1,7 +1,6 @@
 package ch.heig.dil;
 
 import ch.heig.dil.commands.*;
-
 import java.net.URL;
 import java.util.Properties;
 import java.util.concurrent.Callable;
@@ -29,12 +28,14 @@ public class Boomshot implements Callable<Integer> {
         public String[] getVersion() throws Exception {
             URL url = getClass().getResource("/version.properties");
             if (url == null) {
-                return new String[]{"No version.properties file found in the classpath. Is examples.jar in the classpath?"};
+                return new String[] {
+                    "No version.properties file found in the classpath. Is examples.jar in the classpath?"
+                };
             }
             Properties properties = new Properties();
             properties.load(url.openStream());
-            return new String[]{
-                    properties.getProperty("application") + " " + properties.getProperty("version")
+            return new String[] {
+                properties.getProperty("application") + " " + properties.getProperty("version")
             };
         }
     }
