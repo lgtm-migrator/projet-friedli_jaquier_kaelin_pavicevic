@@ -1,4 +1,4 @@
-title: Homepage
+title: First website
 author: Michael Jordan
 date: 04.05.2022
 ---

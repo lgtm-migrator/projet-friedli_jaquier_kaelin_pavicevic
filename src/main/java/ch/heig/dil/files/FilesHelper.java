@@ -104,16 +104,19 @@ public class FilesHelper {
     }
 
     /**
-     * Supprime récursivement un dossier
+     * Supprime récursivement un dossier, s'il existe
      *
      * @param directory : dossier à supprimer
-     * @throws IOException en cas de soucis lors de la suppression
      */
-    public static void deleteDirectory(String directory) throws IOException {
-        Files.walk(Paths.get(directory))
-                .sorted(Comparator.reverseOrder())
-                .map(Path::toFile)
-                .forEach(File::delete);
+    public static void deleteDirectory(String directory) {
+        try {
+            Files.walk(Paths.get(directory))
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+        } catch (IOException ignored) {
+            // Le dossier n'existe pa
+        }
     }
 
     /**
