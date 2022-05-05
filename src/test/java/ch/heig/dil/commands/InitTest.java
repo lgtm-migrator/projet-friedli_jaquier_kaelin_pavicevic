@@ -65,4 +65,16 @@ class InitTest {
 
         FilesHelper.deleteDirectory(FOLDER_NAME);
     }
+
+    @Test
+    void shouldCreateTemplateFiles() throws IOException {
+        String[] args = new String[] {FOLDER_NAME};
+        CommandLine cmd = new CommandLine(new Init());
+        cmd.execute(args);
+
+        assertTrue(new File(FOLDER_NAME + "/template/layout.hbs").exists());
+        assertTrue(new File(FOLDER_NAME + "/template/menu.hbs").exists());
+
+        FilesHelper.deleteDirectory(FOLDER_NAME);
+    }
 }
