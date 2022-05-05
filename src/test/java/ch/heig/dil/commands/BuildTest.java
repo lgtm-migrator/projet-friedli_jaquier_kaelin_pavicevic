@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import ch.heig.dil.files.FilesHelper;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,13 +13,12 @@ import picocli.CommandLine;
 
 class BuildTest {
     private static final String INIT_FOLDER = "./test-build";
-    private static final String BUILD_FOLDER = "./build";
+    private static final String BUILD_FOLDER = INIT_FOLDER + "/build";
 
     /** Crée le dossier de test avant chaque test */
     @BeforeEach
     protected void setup() {
         try {
-            FilesHelper.deleteDirectory(BUILD_FOLDER);
             FilesHelper.deleteDirectory(INIT_FOLDER);
         } catch (Exception ignored) {
         }
@@ -34,11 +35,10 @@ class BuildTest {
     @AfterEach
     protected void clean() throws IOException {
         FilesHelper.deleteDirectory(INIT_FOLDER);
-        FilesHelper.deleteDirectory(BUILD_FOLDER);
     }
 
     @Test
-    void testNormalBuildBehaviour() {
+    void testNormalBuildBehaviour() throws IOException {
         String[] args = new String[] {INIT_FOLDER};
         CommandLine cmd = new CommandLine(new Build());
         cmd.execute(args);
@@ -46,6 +46,12 @@ class BuildTest {
         assertTrue(new File(BUILD_FOLDER + "/index.html").exists());
         assertTrue(new File(BUILD_FOLDER + "/pages/image.jpeg").exists());
         assertTrue(new File(BUILD_FOLDER + "/pages/page.html").exists());
+        assertTrue(
+                Files.readString(Path.of(BUILD_FOLDER + "/index.html"))
+                        .contains("<title>My website | Homepage </title>"));
+        assertTrue(
+                Files.readString(Path.of(BUILD_FOLDER + "/index.html"))
+                        .contains("<h1>My title</h1>"));
     }
 
     @Test

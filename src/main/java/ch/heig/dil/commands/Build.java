@@ -1,12 +1,15 @@
 package ch.heig.dil.commands;
 
 import ch.heig.dil.files.FilesHelper;
+import ch.heig.dil.parsers.MarkdownParser;
 import ch.heig.dil.parsers.PageParser;
+import ch.heig.dil.parsers.ParserYAML;
+import com.github.jknack.handlebars.Template;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
+import java.nio.file.StandardOpenOption;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 import picocli.CommandLine;
@@ -20,45 +23,55 @@ import picocli.CommandLine;
 public class Build implements Callable<Integer> {
 
     @CommandLine.Parameters(index = "0", description = "Source of the static website")
-    private String sourcePath;
-
-    public static final List<String> excluded = List.of("config.yml", "build");
+    private Path sourcePath;
 
     @Override
     public Integer call() throws IOException {
-        String BUILD_DIRECTORY = "build";
-        FilesHelper.cleanDirectoy(BUILD_DIRECTORY);
-        Path out = Paths.get(BUILD_DIRECTORY);
-        Path sourceOfPath = Paths.get(sourcePath);
+        Path out = sourcePath.resolve("build");
 
-        if (!sourceOfPath.toFile().exists()) {
-            System.err.println("Invalid init folder " + sourcePath);
-            return CommandLine.ExitCode.SOFTWARE;
-        }
+        // Parse la configuration
+        Map<String, String> config =
+                ParserYAML.getMetaDataFromString(
+                        Files.readString(sourcePath.resolve("config.yml")));
 
-        try (Stream<Path> walk = Files.walk(sourceOfPath)) {
+        // Initialise le template engine
+        Template template = MarkdownParser.getMarkdownTemplateEngine(sourcePath);
+
+        // Suppression du dossier build s'il existe
+        FilesHelper.deleteDirectory(out.toString());
+
+        try (Stream<Path> walk = Files.walk(sourcePath)) {
             walk.filter(Files::isRegularFile)
-                    .filter(p -> !excluded.contains(p.getFileName().toString()))
+                    .filter(p -> !p.toString().endsWith(".hbs"))
+                    .filter(p -> !p.toString().contains("config.yml"))
                     .forEach(
                             source -> {
-                                Path destination = out.resolve(sourceOfPath.relativize(source));
+                                System.out.println("--> " + source);
+                                Path destination = out.resolve(sourcePath.relativize(source));
                                 try {
                                     Files.createDirectories(destination.getParent());
-                                    if (source.getFileName().toString().endsWith(".md")) {
-                                        destination =
-                                                Path.of(
-                                                        destination
-                                                                .toString()
-                                                                .replace(".md", ".html"));
-                                        String markdown =
-                                                PageParser.parse(Files.readString(source));
+                                    if (source.toString().endsWith(".md")) {
+                                        String html = PageParser.parse(source, config, template);
 
-                                        Files.writeString(destination, markdown);
+                                        // Sauvegarde du fichier html
+                                        Path target =
+                                                sourcePath
+                                                        .resolve("build")
+                                                        .resolve(
+                                                                sourcePath
+                                                                        .relativize(source)
+                                                                        .toString()
+                                                                        .replace(".md", ".html"));
+                                        Files.writeString(
+                                                target,
+                                                html,
+                                                StandardOpenOption.CREATE,
+                                                StandardOpenOption.TRUNCATE_EXISTING);
                                     } else {
                                         Files.copy(source, destination);
                                     }
                                 } catch (IOException e) {
-                                    //                                    e.printStackTrace();
+                                    e.printStackTrace();
                                 }
                             });
         }
