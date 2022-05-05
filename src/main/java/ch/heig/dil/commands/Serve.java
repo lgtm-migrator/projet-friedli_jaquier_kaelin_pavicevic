@@ -12,22 +12,30 @@ import picocli.CommandLine;
 @CommandLine.Command(name = "serve", description = "Serve the static website.")
 public class Serve implements Callable<Integer> {
 
-    @CommandLine.Parameters(paramLabel = "PATH", description = "The path of the build site to serve")
-    public Path path;
+    @CommandLine.Parameters(
+            paramLabel = "PATH",
+            description = "The path of the build site to serve")
+    private Path path;
+
+    @CommandLine.Option(
+            names = {"-p", "--port"},
+            paramLabel = "PORT",
+            arity = "0..1",
+            description = "The port on " + "which the server is listening",
+            defaultValue = "8080")
+    private int port;
 
     @Override
     public Integer call() throws IllegalArgumentException, JavalinException {
         new CommandLine(new Build()).execute(path.toString());
 
-        // TODO : attente Template engine: use handlebars to inject variables #39 pour avoir build dans init path
         path = Paths.get(path.toString(), "/build");
         if (!Files.isDirectory(path)) {
             System.err.println("The directory doesn't exist.");
             return CommandLine.ExitCode.USAGE;
         }
 
-        // TODO: port en tant que args
-        LocalWebServer server = new LocalWebServer(8080, path.toString());
+        LocalWebServer server = new LocalWebServer(port, path.toString());
 
         server.start();
 

@@ -13,6 +13,7 @@ import org.eclipse.jetty.util.log.Log;
  */
 public class LocalWebServer {
     private final Javalin server;
+    private int port;
 
     /**
      * Constructeur permettant seuleument de choisir le directory à serve avec un port par défaut
@@ -35,6 +36,7 @@ public class LocalWebServer {
     public LocalWebServer(int port, String directory)
             throws IllegalArgumentException, JavalinException {
         if (port < 1) throw new IllegalArgumentException("Error : invalid port");
+        this.port = port;
         server =
                 Javalin.create(
                         config -> {
@@ -53,8 +55,8 @@ public class LocalWebServer {
 
     /** Démarre le serveur sur le port voulu */
     public void start() {
-        server.start(server.port());
-        System.out.println("Listening on http://localhost:" + server.port());
+        server.start(port);
+        System.out.println("Listening on http://localhost:" + port);
     }
 
     /** Arrête le serveur */

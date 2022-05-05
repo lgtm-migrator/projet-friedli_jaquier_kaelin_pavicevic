@@ -20,13 +20,12 @@ import picocli.CommandLine;
 
 public class LocalWebServerTest {
     private static final String INIT_FOLDER = "./test-build";
-    private static final String BUILD_FOLDER = "./build";
+    private static final String BUILD_FOLDER = INIT_FOLDER + "/build";
 
     /** Crée le dossier de test avant chaque test */
     @BeforeEach
     protected void setup() {
         try {
-            FilesHelper.deleteDirectory(BUILD_FOLDER);
             FilesHelper.deleteDirectory(INIT_FOLDER);
         } catch (Exception ignored) {
         }
@@ -45,7 +44,6 @@ public class LocalWebServerTest {
     @AfterEach
     protected void clean() throws IOException {
         FilesHelper.deleteDirectory(INIT_FOLDER);
-        FilesHelper.deleteDirectory(BUILD_FOLDER);
     }
 
     @Test
