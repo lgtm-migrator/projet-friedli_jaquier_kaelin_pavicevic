@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import ch.heig.dil.files.FilesHelper;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-
 import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
 
@@ -67,16 +65,16 @@ class InitTest {
 
         FilesHelper.deleteDirectory(FOLDER_NAME);
     }
-    
+
     @Test
     void shouldCreateTemplateFiles() throws IOException {
         String[] args = new String[] {FOLDER_NAME};
         CommandLine cmd = new CommandLine(new Init());
         cmd.execute(args);
-    
+
         assertTrue(new File(FOLDER_NAME + "/template/layout.hbs").exists());
         assertTrue(new File(FOLDER_NAME + "/template/menu.hbs").exists());
-        
+
         FilesHelper.deleteDirectory(FOLDER_NAME);
     }
 }
