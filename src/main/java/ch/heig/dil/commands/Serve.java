@@ -35,7 +35,12 @@ public class Serve implements Callable<Integer> {
             return CommandLine.ExitCode.USAGE;
         }
 
-        LocalWebServer server = new LocalWebServer(port, path.toString());
+        LocalWebServer server;
+        try {
+            server = new LocalWebServer(port, path.toString());
+        } catch (Exception e) {
+            return -1;
+        }
 
         server.start();
 

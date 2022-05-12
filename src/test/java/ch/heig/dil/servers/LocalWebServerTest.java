@@ -91,7 +91,7 @@ public class LocalWebServerTest {
 
         System.out.println(response.body());
         server.stop();
-        assertEquals(response.statusCode(), 200);
+        assertEquals(200, response.statusCode());
     }
 
     @Test
@@ -114,7 +114,7 @@ public class LocalWebServerTest {
 
         System.out.println(response.body());
         server.stop();
-        assertEquals(response.statusCode(), 200);
+        assertEquals(200, response.statusCode());
     }
 
     @Test
@@ -135,6 +135,6 @@ public class LocalWebServerTest {
                 assertDoesNotThrow(
                         () -> client.send(request, HttpResponse.BodyHandlers.ofString()));
         server.stop();
-        assertEquals(response.statusCode(), 404);
+        assertEquals(404, response.statusCode());
     }
 }
