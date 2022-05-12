@@ -10,7 +10,7 @@ import java.io.PrintStream;
 import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
 
-class ServeTest {
+class ServeTest extends AbstractTest {
 
     @Test
     void result() {

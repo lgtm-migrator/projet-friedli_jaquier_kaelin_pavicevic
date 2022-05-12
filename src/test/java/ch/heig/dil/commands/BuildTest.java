@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
 
-class BuildTest {
+class BuildTest extends AbstractTest {
     private static final String INIT_FOLDER = "./test-build";
     private static final String BUILD_FOLDER = INIT_FOLDER + "/build";
 
@@ -70,9 +70,11 @@ class BuildTest {
     void testBuildOnNotInitializedWebsite() {
         String invalidPath = "invalid-path-to-static-website";
         String[] args = new String[] {invalidPath};
+        setHiddenStream();
         CommandLine cmd = new CommandLine(new Build());
         int exitCode = cmd.execute(args);
         assertFalse(new File(invalidPath).exists());
         assertEquals(exitCode, CommandLine.ExitCode.SOFTWARE);
+        resetDefaultStream();
     }
 }
