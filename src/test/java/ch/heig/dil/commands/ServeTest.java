@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-class ServeTest {
+class ServeTest extends AbstractTest {
 
     //    @Test
     //    void result() {

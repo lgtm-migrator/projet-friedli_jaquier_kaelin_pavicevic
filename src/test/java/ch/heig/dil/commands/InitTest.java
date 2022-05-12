@@ -8,7 +8,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
 
-class InitTest {
+class InitTest extends AbstractTest {
     private static final String FOLDER_NAME = "./test-init";
 
     @Test
