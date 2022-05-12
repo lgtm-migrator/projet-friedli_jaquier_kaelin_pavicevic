@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
 
-class CleanTest {
+class CleanTest extends AbstractTest {
 
     @Test
     void testClean() {

@@ -30,9 +30,7 @@ public class Build implements Callable<Integer> {
         Path out = sourcePath.resolve("build");
 
         // Parse la configuration
-        Map<String, String> config =
-                ParserYAML.getMetaDataFromString(
-                        Files.readString(sourcePath.resolve("config.yml")));
+        Map<String, String> config = ParserYAML.parseConfig(sourcePath);
 
         // Initialise le template engine
         Template template = MarkdownParser.getMarkdownTemplateEngine(sourcePath);
@@ -43,7 +41,7 @@ public class Build implements Callable<Integer> {
         try (Stream<Path> walk = Files.walk(sourcePath)) {
             walk.filter(Files::isRegularFile)
                     .filter(p -> !p.toString().endsWith(".hbs"))
-                    .filter(p -> !p.toString().contains("config.yml"))
+                    .filter(p -> !p.toString().contains(ParserYAML.CONFIG_FILE))
                     .forEach(
                             source -> {
                                 System.out.println("--> " + source);
