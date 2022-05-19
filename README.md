@@ -61,7 +61,7 @@ Commands:
 
 ### Commandes disponibles
 
-`init`
+### `init`
 
 Description : Cette commande permet d'initialiser un site statique dans le dossier de notre choix. Pour ce faire, il suffit de passer en argument le chemin relatif du dossier dans lequel on veut stocker notre site. Cela va permettre de créer/enrichir ce dossier. A l'intérieur de ce dernier, on trouvera un dossier contenant les différentes pages du site, un dossier de templating, le fichier config.yml contenant des informations sur le site et la page d'accueil du site.
 
@@ -85,15 +85,17 @@ Exemple de dossier après l'exécution de la commande :
         menu.hbs
 ```
 
-`build`
+### `build`
 
-Description :
+Description : Cette command permet de créer le sous-dossier build contenant les différentes pages du site.
 
 Exemple :
 
 ```bash
 boomshot build /monNouveauSiteStatique
 ```
+Si le dossier /monNouveauSiteStatique n'existe pas (commande init pas effectuée ou dossier supprimé), cela produira une erreur.  
+
 Exemple de dossier après l'exécution de la commande.
 ```json
 │   config.yml
@@ -115,22 +117,26 @@ Exemple de dossier après l'exécution de la commande.
         menu.hbs
 ```
 
-`clean`
+### `clean`
 
 Description : Cette commande permet de supprimer le dossier /monNouveauSiteStatique/build
 
 Exemple :
 
 ```bash
-boomshot clean
+boomshot clean /monNouveauSiteStatique
 ```
 
-`serve`
+Le dossier /monNouveauSiteStatique est censé être pareil qu'après l'exécution de la commande ```init```.
 
-Description :
+### `serve`
+
+Description : Cette commande permet de pré-visualiser le résultat de la compilation de notre site statique. L'exécution de cette commande va build notre site puis nous afficher une URL permettant de voir notre site dans un navigateur web.  
+Afin de quitter la pré-visualisation, il suffit de taper `exit`.
 
 Exemple :
 
 ```bash
-boomshot serve
+boomshot serve /monNouveauSiteStatique [-p 8888]
 ```
+L'argument `-p` peut être remplacé par son équivalent `--port`.
