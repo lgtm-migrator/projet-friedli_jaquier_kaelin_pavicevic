@@ -87,7 +87,7 @@ Exemple de contenu du dossier monNouveauSiteStatique après l'exécution de la c
 
 ### `build`
 
-Description : Cette command permet de créer le sous-dossier build contenant les différentes pages du site.
+Description : Cette command permet de créer le sous-dossier build, dans le dossier monNouveauSiteStatique, contenant les différentes pages du site.
 
 Exemple :
 
@@ -96,7 +96,7 @@ boomshot build monNouveauSiteStatique
 ```
 Si le dossier monNouveauSiteStatique n'existe pas (commande init pas effectuée ou dossier supprimé), cela produira une erreur.  
 
-Exemple de dossier après l'exécution de la commande.
+Exemple de contenu du dossier monNouveauSiteStatique après l'exécution de la commande :
 ```
 │   config.yml
 │   index.md
