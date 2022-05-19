@@ -71,6 +71,19 @@ Exemple :
 boomshot init /monNouveauSiteStatique
 ```
 Cette commande va initialiser le site dans le dossier /"monNouveauSiteStatique".
+Voici à quoi ressemble le résultat de la commande :
+```json
+│   config.yml
+│   index.md
+│
+├───pages
+│       image.jpeg
+│       page.md
+│
+└───template
+        layout.hbs
+        menu.hbs
+```
 
 `clean`
 
