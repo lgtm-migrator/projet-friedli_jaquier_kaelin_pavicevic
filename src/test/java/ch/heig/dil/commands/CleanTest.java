@@ -1,14 +1,13 @@
 package ch.heig.dil.commands;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import ch.heig.dil.Boomshot;
+import ch.heig.dil.files.FilesHelper;
 import java.io.*;
 import java.nio.file.Files;
-
-import ch.heig.dil.files.FilesHelper;
 import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CleanTest extends AbstractTest {
 
@@ -25,8 +24,8 @@ class CleanTest extends AbstractTest {
         cmd.setOut(new PrintWriter(sw));
 
         File path = new File("CleanTest/build");
-        assertDoesNotThrow(() ->         FilesHelper.createFile("CleanTest/build/test.txt",
-                "temporaryFile"));
+        assertDoesNotThrow(
+                () -> FilesHelper.createFile("CleanTest/build/test.txt", "temporaryFile"));
         int exitCode = cmd.execute("clean", "CleanTest");
         File site = new File("CleanTest");
         site.delete();
