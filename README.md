@@ -61,42 +61,82 @@ Commands:
 
 ### Commandes disponibles
 
-`new`
+### `init`
 
-Description :
-
-Exemple :
-
-```bash
-boomshot new
-```
-
-`clean`
-
-Description :
+Description : Cette commande permet d'initialiser un site statique dans le dossier de notre choix. Pour ce faire, il suffit de passer en argument le chemin relatif du dossier dans lequel on veut stocker notre site. Cela va permettre de créer/enrichir ce dossier. A l'intérieur de ce dernier, on trouvera un dossier contenant les différentes pages du site en format markdown, un dossier de templating, le fichier config.yml contenant des informations sur le site et la page d'accueil du site également au format markdown.  
 
 Exemple :
 
 ```bash
-boomshot clean
+boomshot init monNouveauSiteStatique
+```
+Cette commande va initialiser le site dans le dossier /monNouveauSiteStatique.
+Exemple de contenu du dossier monNouveauSiteStatique après l'exécution de la commande :
+```
+│   config.yml
+│   index.md
+│
+├───pages
+│       image.jpeg
+│       page.md
+│
+└───template
+        layout.hbs
+        menu.hbs
 ```
 
-`build`
+### `build`
 
-Description :
+Description : Cette command permet de créer le sous-dossier build, dans le dossier monNouveauSiteStatique, contenant les différentes pages du site.
 
 Exemple :
 
 ```bash
-boomshot build
+boomshot build monNouveauSiteStatique
+```
+Si le dossier monNouveauSiteStatique n'existe pas (commande init pas effectuée ou dossier supprimé), cela produira une erreur.  
+
+Exemple de contenu du dossier monNouveauSiteStatique après l'exécution de la commande :
+```
+│   config.yml
+│   index.md
+│
+├───build
+│   │   index.html
+│   │
+│   └───pages
+│           image.jpeg
+│           page.html
+│
+├───pages
+│       image.jpeg
+│       page.md
+│
+└───template
+        layout.hbs
+        menu.hbs
 ```
 
-`serve`
+### `clean`
 
-Description :
+Description : Cette commande permet de supprimer le dossier monNouveauSiteStatique/build
 
 Exemple :
 
 ```bash
-boomshot serve
+boomshot clean monNouveauSiteStatique
 ```
+
+Le dossier monNouveauSiteStatique est censé être pareil qu'après l'exécution de la commande ```init```.
+
+### `serve`
+
+Description : Cette commande permet de visualiser le résultat de la compilation de notre site statique. L'exécution de cette commande va build notre site puis nous afficher une URL permettant de voir notre site dans un navigateur web.  
+Afin de quitter la visualisation, il suffit de taper `exit`.
+
+Exemple :
+
+```bash
+boomshot serve monNouveauSiteStatique [-p 8888]
+```
+L'argument `-p` peut être remplacé par son équivalent `--port`.
