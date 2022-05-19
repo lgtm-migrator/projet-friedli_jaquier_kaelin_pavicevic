@@ -25,10 +25,28 @@ public class Build implements Callable<Integer> {
     @CommandLine.Parameters(index = "0", description = "Source of the static website")
     private Path sourcePath;
 
+    @CommandLine.Option(
+            names = {"-w", "--watch"},
+            paramLabel = "WATCH",
+            arity = "0..1",
+            description = "Watch for the file changes")
+    private boolean watch = false;
+
     @Override
     public Integer call() throws IOException {
         Path out = sourcePath.resolve("build");
+        buildFiles(out);
+        System.out.println("Static website built.");
 
+        if (watch) {
+            // TODO: watch for changes
+            System.out.println("WATCH MODE ON");
+        }
+
+        return CommandLine.ExitCode.OK;
+    }
+
+    private void buildFiles(Path out) throws IOException {
         // Parse la configuration
         Map<String, String> config = ParserYAML.parseConfig(sourcePath);
 
@@ -44,7 +62,6 @@ public class Build implements Callable<Integer> {
                     .filter(p -> !p.toString().contains(ParserYAML.CONFIG_FILE))
                     .forEach(
                             source -> {
-                                System.out.println("--> " + source);
                                 Path destination = out.resolve(sourcePath.relativize(source));
                                 try {
                                     Files.createDirectories(destination.getParent());
@@ -73,8 +90,5 @@ public class Build implements Callable<Integer> {
                                 }
                             });
         }
-        System.out.println("Static website built.");
-
-        return CommandLine.ExitCode.OK;
     }
 }
