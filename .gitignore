@@ -21,3 +21,10 @@ buildNumber.properties
 
 # Release
 boomshot/
+
+# Debug
+tmp/
+
+# Test website
+mywebsite/
+build/

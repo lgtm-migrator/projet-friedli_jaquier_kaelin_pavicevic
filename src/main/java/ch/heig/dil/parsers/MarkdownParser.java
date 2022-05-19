@@ -1,5 +1,10 @@
 package ch.heig.dil.parsers;
 
+import com.github.jknack.handlebars.*;
+import com.github.jknack.handlebars.io.FileTemplateLoader;
+import com.github.jknack.handlebars.io.TemplateLoader;
+import java.io.IOException;
+import java.nio.file.Path;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
@@ -8,35 +13,36 @@ import org.commonmark.renderer.html.HtmlRenderer;
  * Classe permettant de transformer du text markdown en html
  *
  * @author Jonathan Friedli
+ * @author Valentin Kaelin
  */
-public class MarkdownParser {
+public class MarkdownParser implements Helper<String> {
+    private final Parser parser = Parser.builder().build();
+    private final HtmlRenderer renderer = HtmlRenderer.builder().build();
 
     /**
-     * Transformer une string de markdown à html
+     * Initialise le template engine pour les fichiers markdown
      *
-     * @param line Chaine de caractère à transformer
-     * @return Chaine de caractère au format html
+     * @param source : fichier source
+     * @return le template engine
+     * @throws IOException en cas d'erreur lors de la compilation du layout
      */
-    public static String markdownToHtml(String line) {
-        Parser parser = Parser.builder().build();
-        Node document = parser.parse(line);
-        HtmlRenderer renderer = HtmlRenderer.builder().build();
-        return renderer.render(document);
+    public static Template getMarkdownTemplateEngine(Path source) throws IOException {
+        TemplateLoader loader = new FileTemplateLoader(source.resolve("template").toFile());
+        Handlebars handlebars = new Handlebars(loader);
+        handlebars.registerHelper("md", new MarkdownParser());
+        return handlebars.compile("layout");
     }
 
     /**
-     * Prend une string contenant une image au format markdown et la transforme en balise html
-     * contentant ladite image.
+     * Transforme une string de markdown à html
      *
-     * @param line String en markdown
-     * @return La balise, contenant l'image, au format html
+     * @param markdown : la string markdown à transformer
+     * @param options : les options de la transformation, non utilisées ici
+     * @return l'html sous forme de string
      */
-    public static String markdownToHtmlImage(String line) {
-        String temp = markdownToHtml(line);
-        temp = temp.substring(3);
-        temp = temp.substring(0, temp.length() - 5);
-        StringBuilder sb = new StringBuilder(temp);
-        sb.delete(temp.length() - 3, temp.length() - 2).append("\n");
-        return sb.toString();
+    @Override
+    public Object apply(String markdown, Options options) {
+        Node document = parser.parse(markdown);
+        return renderer.render(document);
     }
 }
