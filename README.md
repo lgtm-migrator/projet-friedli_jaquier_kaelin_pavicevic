@@ -63,7 +63,7 @@ Commands:
 
 ### `init`
 
-Description : Cette commande permet d'initialiser un site statique dans le dossier de notre choix. Pour ce faire, il suffit de passer en argument le chemin relatif du dossier dans lequel on veut stocker notre site. Cela va permettre de créer/enrichir ce dossier. A l'intérieur de ce dernier, on trouvera un dossier contenant les différentes pages du site, un dossier de templating, le fichier config.yml contenant des informations sur le site et la page d'accueil du site.
+Description : Cette commande permet d'initialiser un site statique dans le dossier de notre choix. Pour ce faire, il suffit de passer en argument le chemin relatif du dossier dans lequel on veut stocker notre site. Cela va permettre de créer/enrichir ce dossier. A l'intérieur de ce dernier, on trouvera un dossier contenant les différentes pages du site en format markdown, un dossier de templating, le fichier config.yml contenant des informations sur le site et la page d'accueil du site également au format markdown.  
 
 Exemple :
 
@@ -71,7 +71,7 @@ Exemple :
 boomshot init monNouveauSiteStatique
 ```
 Cette commande va initialiser le site dans le dossier /monNouveauSiteStatique.
-Exemple de dossier après l'exécution de la commande :
+Exemple de contenu du dossier monNouveauSiteStatique après l'exécution de la commande :
 ```
 │   config.yml
 │   index.md
