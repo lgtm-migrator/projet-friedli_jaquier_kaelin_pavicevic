@@ -71,7 +71,7 @@ Exemple :
 boomshot init /monNouveauSiteStatique
 ```
 Cette commande va initialiser le site dans le dossier /"monNouveauSiteStatique".
-Voici à quoi ressemble le résultat de la commande :
+Exemple de dossier après l'exécution de la commande :
 ```json
 │   config.yml
 │   index.md
@@ -85,16 +85,6 @@ Voici à quoi ressemble le résultat de la commande :
         menu.hbs
 ```
 
-`clean`
-
-Description :
-
-Exemple :
-
-```bash
-boomshot clean
-```
-
 `build`
 
 Description :
@@ -102,7 +92,37 @@ Description :
 Exemple :
 
 ```bash
-boomshot build
+boomshot build /monNouveauSiteStatique
+```
+Exemple de dossier après l'exécution de la commande.
+```json
+│   config.yml
+│   index.md
+│
+├───build
+│   │   index.html
+│   │
+│   └───pages
+│           image.jpeg
+│           page.html
+│
+├───pages
+│       image.jpeg
+│       page.md
+│
+└───template
+        layout.hbs
+        menu.hbs
+```
+
+`clean`
+
+Description : Cette commande permet de supprimer le dossier /monNouveauSiteStatique/build
+
+Exemple :
+
+```bash
+boomshot clean
 ```
 
 `serve`
