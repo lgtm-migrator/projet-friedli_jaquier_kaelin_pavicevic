@@ -72,7 +72,7 @@ boomshot init monNouveauSiteStatique
 ```
 Cette commande va initialiser le site dans le dossier /monNouveauSiteStatique.
 Exemple de dossier après l'exécution de la commande :
-```json
+```
 │   config.yml
 │   index.md
 │
@@ -97,7 +97,7 @@ boomshot build monNouveauSiteStatique
 Si le dossier monNouveauSiteStatique n'existe pas (commande init pas effectuée ou dossier supprimé), cela produira une erreur.  
 
 Exemple de dossier après l'exécution de la commande.
-```json
+```
 │   config.yml
 │   index.md
 │
