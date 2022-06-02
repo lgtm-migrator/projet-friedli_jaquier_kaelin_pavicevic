@@ -34,4 +34,13 @@ class BoomshotTest {
             assertTrue((output.toString().contains("A static site generator")));
         }
     }
+
+    @Test
+    void testGetVersion() throws Exception {
+        Boomshot.VersionProvide versionProvide = new Boomshot.VersionProvide();
+        String[] rawVersion = versionProvide.getVersion();
+        String[] version = rawVersion[0].split(" ");
+        assertEquals(version[0], "Boomshot");
+        assertEquals(version[1], "1.0-SNAPSHOT");
+    }
 }
