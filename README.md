@@ -22,7 +22,6 @@ suivante: [Portfolio](https://github.com/dil-classroom/projet-friedli_jaquier_ka
 L'application met à disposition des commandes permettant de générer des sites
 statiques.
 
-TODO : A compléter lorsque les commandes ont été implémentées.
 
 ## Installation
 
@@ -59,7 +58,7 @@ Commands:
   serve  Serve the static website.
 ```
 
-### Commandes disponibles
+## Commandes disponibles
 
 ### `init`
 
@@ -140,3 +139,9 @@ Exemple :
 boomshot serve monNouveauSiteStatique [-p 8888]
 ```
 L'argument `-p` peut être remplacé par son équivalent `--port`.
+
+
+## Manuel d'utilisation
+
+Salut à tous les amis, c'est davidLaFarge pokémon, et aujourd'hui on se retrouve avec miss jiralex. "Coucou !".
+Dans ce tuto on va vous apprendre à utiliser boooooooooomshot.
