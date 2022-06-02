@@ -1,7 +1,6 @@
 package ch.heig.dil.commands;
 
-import java.io.File;
-import java.io.IOException;
+import ch.heig.dil.files.FilesHelper;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
 
@@ -11,11 +10,9 @@ public class Clean implements Callable<Integer> {
     String pathToSite;
 
     @Override
-    public Integer call() throws IOException {
-        File site = new File(System.getProperty("user.dir") + pathToSite + "/build");
-        if (!site.delete()) {
-            throw new IOException("Clean command failed");
-        }
+    public Integer call() {
+        String buildFolder = System.getProperty("user.dir") + '/' + pathToSite + "/build";
+        FilesHelper.deleteDirectory(buildFolder);
         System.out.println("The site has been cleaned");
         return 0;
     }
