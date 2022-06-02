@@ -181,4 +181,13 @@ public class DirectoryWatcher {
     public void addIgnoredFile(Path file) {
         ignoredFiles.add(file);
     }
+
+    /**
+     * Stoppe l'observation
+     *
+     * @throws IOException en cas d'erreur IO
+     */
+    public void stop() throws IOException {
+        watcher.close();
+    }
 }
