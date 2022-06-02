@@ -162,8 +162,9 @@ date: 02.06.2022
 
 ![Une sportive](./images/sportive.jpg)
  ```
-**Warning**
-Le chemin de l'image doit être relatif ou être une URL. 
+> **Warning**  
+Le chemin de l'image doit être relatif ou être une URL.   
+
 Afin de garder l'arborescence du site assez propre, nous pouvons créer un dossier `images` afin d'y stocker les images.
 Nous pouvons ensuite modifier/créer plus de page dans le dossier `pages`.   
 Nous pouvons également modifier le fichier contenu dans le dossier `template`. Cela nous permet de modifier le menu du site ainsi que la structure de la page. Voila à quoi ressemble le fichier l'arborescence de notre dossier `gymeo` :
