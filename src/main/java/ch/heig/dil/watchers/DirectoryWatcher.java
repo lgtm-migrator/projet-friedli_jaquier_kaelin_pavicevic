@@ -1,79 +1,184 @@
 package ch.heig.dil.watchers;
 
 import java.nio.file.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 
-/** Source: https://www.waitingforcode.com/java-i-o/watching-files-with-watchservice/read */
-public class DirectoryWatcher implements Runnable {
+import static java.nio.file.StandardWatchEventKinds.*;
+import static java.nio.file.LinkOption.*;
 
-    private final WatchService watchService;
+import java.nio.file.attribute.*;
+import java.io.*;
+import java.util.*;
 
-    private final CountDownLatch countDownLatch;
+/**
+ * Observe récursivement des modifications sur un répertoire.
+ * Code initial: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/essential/io/examples/WatchDir.java
+ *
+ * @author Valentin Kaelin
+ */
+public class DirectoryWatcher {
+    private final WatchService watcher;
+    private final WatcherHandler handler;
+    private final Map<WatchKey, Path> keys;
+    private final List<Path> ignoredFiles;
 
-    private boolean invalidKey;
+    private final boolean recursive;
+    private final boolean debug;
 
-    private final Map<WatchEvent.Kind<Path>, Integer> stats =
-            new HashMap<>(
-                    Map.of(
-                            StandardWatchEventKinds.ENTRY_CREATE,
-                            0,
-                            StandardWatchEventKinds.ENTRY_MODIFY,
-                            0,
-                            StandardWatchEventKinds.ENTRY_DELETE,
-                            0));
-
-    public DirectoryWatcher(WatchService watchService, CountDownLatch countDownLatch) {
-        this.watchService = watchService;
-        this.countDownLatch = countDownLatch;
+    @SuppressWarnings("unchecked")
+    static <T> WatchEvent<T> cast(WatchEvent<?> event) {
+        return (WatchEvent<T>) event;
     }
 
-    @Override
-    public void run() {
+    /**
+     * Enregistre le répertoire donné avec le WatchService
+     *
+     * @param dir : répertoire à observer
+     * @throws IOException en cas d'erreur d'IO
+     */
+    private void register(Path dir) throws IOException {
+        WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+        if (debug) {
+            Path prev = keys.get(key);
+            if (prev == null) {
+                System.out.format("register: %s\n", dir);
+            } else {
+                if (!dir.equals(prev)) {
+                    System.out.format("update: %s -> %s\n", prev, dir);
+                }
+            }
+        }
+        keys.put(key, dir);
+    }
+
+    /**
+     * Enregistre le répertoire donné et ses sous-dossiers avec le WatchService
+     *
+     * @param start : répertoire racine à observer
+     * @throws IOException
+     */
+    private void registerAll(final Path start) throws IOException {
+        Files.walkFileTree(start, new SimpleFileVisitor<>() {
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+                    throws IOException {
+                register(dir);
+                return FileVisitResult.CONTINUE;
+            }
+        });
+    }
+
+    /**
+     * Crée le WatchService et enregistre récursivement le répertoire donné
+     *
+     * @param dir       : répertoire racine à observer
+     * @param handler   : gestionnaire d'événements
+     * @param recursive : observe récursivement les sous-dossiers ou non
+     * @param debug     : affiche les messages de debug ou non
+     * @throws IOException en cas d'erreur IO
+     */
+    public DirectoryWatcher(Path dir, WatcherHandler handler,
+                            boolean recursive, boolean debug) throws IOException {
+        watcher = FileSystems.getDefault().newWatchService();
+        this.handler = handler;
+        keys = new HashMap<>();
+        ignoredFiles = new ArrayList<>();
+        this.recursive = recursive;
+
+        if (recursive)
+            registerAll(dir);
+        else
+            register(dir);
+
+        this.debug = debug;
+    }
+
+    /**
+     * Traite tous les événements mis en attente dans le watcher.
+     */
+    public void processEvents() {
+        System.out.println("Watching for changes...");
         while (true) {
-            WatchKey watchKey;
+            // wait for key to be signalled
+            WatchKey key;
             try {
-                //                watchKey = watchService.poll(1, TimeUnit.SECONDS);
-                watchKey = watchService.take();
-                System.out.println(watchKey);
-                if (watchKey != null) {
-                    for (WatchEvent<?> event : watchKey.pollEvents()) {
-                        stats.put(
-                                (WatchEvent.Kind<Path>) event.kind(), stats.get(event.kind()) + 1);
-                        System.out.println("FILE CHANGED");
-                    }
-                    // is mandatory, otherwise it blocks further notifications for the file
-                    // (example: edit the same file twice,
-                    // without reset() only the first change will be notified)
-                    if (!watchKey.reset()) {
-                        invalidKey = true;
-                        // check if reset was correctly made, otherwise it can mean that the
-                        // directory is not accessible anymore
-                        countDownLatch.countDown();
+                key = watcher.take();
+            } catch (InterruptedException x) {
+                return;
+            }
+
+            Path dir = keys.get(key);
+            if (dir == null) {
+                System.err.println("WatchKey not recognized!");
+                continue;
+            }
+
+            for (WatchEvent<?> event : key.pollEvents()) {
+                WatchEvent.Kind<?> kind = event.kind();
+
+                if (kind == OVERFLOW) {
+                    continue;
+                }
+
+                // Context for directory entry event is the file name of entry
+                WatchEvent<Path> ev = cast(event);
+                Path name = ev.context();
+                Path child = dir.resolve(name);
+
+                // Check if file is ignored
+                boolean isFileIgnored = false;
+                for (Path ignoredFile : ignoredFiles) {
+                    if (child.startsWith(ignoredFile)) {
+                        isFileIgnored = true;
                         break;
                     }
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                countDownLatch.countDown();
+
+                if (isFileIgnored) {
+                    continue;
+                }
+
+                // print out event
+                if (debug) {
+                    System.out.format("%s: %s\n", event.kind().name(), child);
+                }
+
+                // handle event
+                try {
+                    handler.handle(event);
+                } catch (IOException ignored) {
+                }
+
+                // if directory is created, and watching recursively, then
+                // register it and its subdirectories
+                if (recursive && (kind == ENTRY_CREATE)) {
+                    try {
+                        if (Files.isDirectory(child, NOFOLLOW_LINKS)) {
+                            registerAll(child);
+                        }
+                    } catch (IOException ignored) {
+                    }
+                }
+            }
+
+            // reset key and remove from set if directory no longer accessible
+            boolean valid = key.reset();
+            if (!valid) {
+                keys.remove(key);
+
+                // all directories are inaccessible
+                if (keys.isEmpty()) {
+                    break;
+                }
             }
         }
     }
 
-    public boolean wasInvalidKey() {
-        return invalidKey;
-    }
-
-    public int getCreates() {
-        return stats.get(StandardWatchEventKinds.ENTRY_CREATE);
-    }
-
-    public int getModifications() {
-        return stats.get(StandardWatchEventKinds.ENTRY_MODIFY);
-    }
-
-    public int getDeletes() {
-        return stats.get(StandardWatchEventKinds.ENTRY_DELETE);
+    /**
+     * Ajoute le chemin aux fichiers ignorés
+     *
+     * @param file : path à ignorer
+     */
+    public void addIgnoredFile(Path file) {
+        ignoredFiles.add(file);
     }
 }

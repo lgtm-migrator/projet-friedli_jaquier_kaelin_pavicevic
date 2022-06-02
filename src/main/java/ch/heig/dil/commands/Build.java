@@ -5,14 +5,15 @@ import ch.heig.dil.parsers.MarkdownParser;
 import ch.heig.dil.parsers.PageParser;
 import ch.heig.dil.parsers.ParserYAML;
 import ch.heig.dil.watchers.DirectoryWatcher;
+import ch.heig.dil.watchers.WatcherHandler;
 import com.github.jknack.handlebars.Template;
+
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
+
 import picocli.CommandLine;
 
 /**
@@ -34,27 +35,24 @@ public class Build implements Callable<Integer> {
     private boolean watch = false;
 
     @Override
-    public Integer call() throws IOException, InterruptedException {
+    public Integer call() throws IOException {
         Path out = sourcePath.resolve("build");
         buildFiles(out);
         System.out.println("Static website built.");
 
         if (watch) {
-            // TODO: watch for changes
-            System.out.println("WATCH MODE ON");
-
-            WatchService watchService = FileSystems.getDefault().newWatchService();
-            sourcePath.register(
-                    watchService,
-                    StandardWatchEventKinds.ENTRY_CREATE,
-                    StandardWatchEventKinds.ENTRY_DELETE,
-                    StandardWatchEventKinds.ENTRY_MODIFY);
-            CountDownLatch countDownLatch = new CountDownLatch(10);
-
-            DirectoryWatcher watcher = new DirectoryWatcher(watchService, countDownLatch);
-
-            new Thread(watcher).start();
-            countDownLatch.await(10, TimeUnit.SECONDS);
+            WatcherHandler handler = new WatcherHandler() {
+                @Override
+                public void handle(WatchEvent<?> event) throws IOException {
+                    System.out.println("File changed, rebuilding...");
+                    buildFiles(out);
+                    System.out.println("Static website rebuilt.");
+                }
+            };
+            DirectoryWatcher watcher = new DirectoryWatcher(sourcePath, handler,
+                    true, false);
+            watcher.addIgnoredFile(out);
+            watcher.processEvents();
         }
 
         return CommandLine.ExitCode.OK;
