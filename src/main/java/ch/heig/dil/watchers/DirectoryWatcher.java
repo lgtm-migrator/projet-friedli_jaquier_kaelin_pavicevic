@@ -1,17 +1,16 @@
 package ch.heig.dil.watchers;
 
-import java.nio.file.*;
-
-import static java.nio.file.StandardWatchEventKinds.*;
 import static java.nio.file.LinkOption.*;
+import static java.nio.file.StandardWatchEventKinds.*;
 
-import java.nio.file.attribute.*;
 import java.io.*;
+import java.nio.file.*;
+import java.nio.file.attribute.*;
 import java.util.*;
 
 /**
- * Observe récursivement des modifications sur un répertoire.
- * Code initial: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/essential/io/examples/WatchDir.java
+ * Observe récursivement des modifications sur un répertoire. Code initial:
+ * https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/essential/io/examples/WatchDir.java
  *
  * @author Valentin Kaelin
  */
@@ -57,44 +56,42 @@ public class DirectoryWatcher {
      * @throws IOException
      */
     private void registerAll(final Path start) throws IOException {
-        Files.walkFileTree(start, new SimpleFileVisitor<>() {
-            @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-                    throws IOException {
-                register(dir);
-                return FileVisitResult.CONTINUE;
-            }
-        });
+        Files.walkFileTree(
+                start,
+                new SimpleFileVisitor<>() {
+                    @Override
+                    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+                            throws IOException {
+                        register(dir);
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
     }
 
     /**
      * Crée le WatchService et enregistre récursivement le répertoire donné
      *
-     * @param dir       : répertoire racine à observer
-     * @param handler   : gestionnaire d'événements
+     * @param dir : répertoire racine à observer
+     * @param handler : gestionnaire d'événements
      * @param recursive : observe récursivement les sous-dossiers ou non
-     * @param debug     : affiche les messages de debug ou non
+     * @param debug : affiche les messages de debug ou non
      * @throws IOException en cas d'erreur IO
      */
-    public DirectoryWatcher(Path dir, WatcherHandler handler,
-                            boolean recursive, boolean debug) throws IOException {
+    public DirectoryWatcher(Path dir, WatcherHandler handler, boolean recursive, boolean debug)
+            throws IOException {
         watcher = FileSystems.getDefault().newWatchService();
         this.handler = handler;
         keys = new HashMap<>();
         ignoredFiles = new ArrayList<>();
         this.recursive = recursive;
 
-        if (recursive)
-            registerAll(dir);
-        else
-            register(dir);
+        if (recursive) registerAll(dir);
+        else register(dir);
 
         this.debug = debug;
     }
 
-    /**
-     * Traite tous les événements mis en attente dans le watcher.
-     */
+    /** Traite tous les événements mis en attente dans le watcher. */
     public void processEvents() {
         System.out.println("Watching for changes...");
         while (true) {

@@ -7,13 +7,11 @@ import ch.heig.dil.parsers.ParserYAML;
 import ch.heig.dil.watchers.DirectoryWatcher;
 import ch.heig.dil.watchers.WatcherHandler;
 import com.github.jknack.handlebars.Template;
-
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.stream.Stream;
-
 import picocli.CommandLine;
 
 /**
@@ -41,16 +39,16 @@ public class Build implements Callable<Integer> {
         System.out.println("Static website built.");
 
         if (watch) {
-            WatcherHandler handler = new WatcherHandler() {
-                @Override
-                public void handle(WatchEvent<?> event) throws IOException {
-                    System.out.println("File changed, rebuilding...");
-                    buildFiles(out);
-                    System.out.println("Static website rebuilt.");
-                }
-            };
-            DirectoryWatcher watcher = new DirectoryWatcher(sourcePath, handler,
-                    true, false);
+            WatcherHandler handler =
+                    new WatcherHandler() {
+                        @Override
+                        public void handle(WatchEvent<?> event) throws IOException {
+                            System.out.println("File changed, rebuilding...");
+                            buildFiles(out);
+                            System.out.println("Static website rebuilt.");
+                        }
+                    };
+            DirectoryWatcher watcher = new DirectoryWatcher(sourcePath, handler, true, false);
             watcher.addIgnoredFile(out);
             watcher.processEvents();
         }
