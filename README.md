@@ -143,8 +143,8 @@ L'argument `-p` peut être remplacé par son équivalent `--port`.
 
 ## Manuel d'utilisation
 
-Salut à tous les amis, c'est davidLaFarge pokémon, et aujourd'hui on se retrouve avec miss jiralex. "Coucou !".
-Dans ce tuto on va vous apprendre à utiliser boooooooooomshot.
+Nous allons faire un petit guide pour vous aider à utiliser Boomshot.
+
 ### Initialisation d'un site statique
 Nous allons créer un site qui s'appelle gymeo. Dans un premier temps, nous exécutons la commande suivante :  
  ```bash 
@@ -162,7 +162,7 @@ date: 02.06.2022
 
 ![Une sportive](./images/sportive.jpg)
  ```
-/!\ Le chemin de l'image doit être relatif. /!\  
+**Warning** Le chemin de l'image doit être relatif ou être une URL. 
 Afin de garder l'arborescence du site assez propre, nous pouvons créer un dossier `images` afin d'y stocker les images.
 Nous pouvons ensuite modifier/créer plus de page dans le dossier `pages`.   
 Nous pouvons également modifier le fichier contenu dans le dossier `template`. Cela nous permet de modifier le menu du site ainsi que la structure de la page. Voila à quoi ressemble le fichier l'arborescence de notre dossier `gymeo` :
