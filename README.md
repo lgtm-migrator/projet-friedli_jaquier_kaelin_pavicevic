@@ -148,7 +148,7 @@ Nous allons faire un petit guide pour vous aider à utiliser Boomshot.
 ### Initialisation d'un site statique
 Nous allons créer un site qui s'appelle gymeo. Dans un premier temps, nous exécutons la commande suivante :  
  ```bash 
- $ Boomshot init gymeo
+ $ boomshot init gymeo
  ```
  Cette commande va créer le dossier du projet gymeo ainsi que sa structure. Ensuite nous allons modifier la page d'accueil `index.md` se trouvant à la racine du dossier `gymeo`.  
  Les trois première lignes du fchier sont des méta-données et tout ce qui est après les `"---"` sera le contenu de la page.  
@@ -189,12 +189,12 @@ Nous pouvons également modifier le fichier contenu dans le dossier `template`. 
 Une fois que nous avons fini avec ces modifications, nous allons build notre projet avec la commande suivante.
 
 ```bash
-$ Boomshot build gymeo
+$ boomshot build gymeo
 ```
 Cela va créer le dossier `build` dans le dossier `gymeo`. Ce dossier contiendra les différentes pages du site au format html.
 Cependant, si nous faisons des modifications sur notre site, nous devrions relancer la commande `build`. C'est pourquoi nous pouvons ajouter un tag à la commande `build`.
 ```bash
-$ Boomshot build gymeo --watch
+$ boomshot build gymeo --watch
 ```
 Cela aura pour effet de rebuild le site à chaque fois qu'une modification est détectée dans le dossier `gymeo`.
 
@@ -203,7 +203,7 @@ Cela aura pour effet de rebuild le site à chaque fois qu'une modification est d
 Afin de visualiser le site dans un navigateur internet, nous allons utiliser la commande suivante :
 
 ```bash
-$ Boomshot serve gymeo
+$ boomshot serve gymeo
 ```
 Cette commande va créer notre propre serveur web qui va permettre de visualiser notre site. Afin d'arrêter la visualisation, il suffit de taper `exit`.
 
@@ -212,5 +212,5 @@ Cette commande va créer notre propre serveur web qui va permettre de visualiser
 Si, par la suite,  nous souhaitons supprimer le dossier `build`, il nous sufit de lancer la commande `clean`.
 
 ```bash
-$ Boomshot clean gymeo
+$ boomshot clean gymeo
 ```
