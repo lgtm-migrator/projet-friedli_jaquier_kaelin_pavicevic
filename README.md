@@ -22,7 +22,6 @@ suivante: [Portfolio](https://github.com/dil-classroom/projet-friedli_jaquier_ka
 L'application met à disposition des commandes permettant de générer des sites
 statiques.
 
-TODO : A compléter lorsque les commandes ont été implémentées.
 
 ## Installation
 
@@ -59,7 +58,7 @@ Commands:
   serve  Serve the static website.
 ```
 
-### Commandes disponibles
+## Commandes disponibles
 
 ### `init`
 
@@ -140,3 +139,78 @@ Exemple :
 boomshot serve monNouveauSiteStatique [-p 8888]
 ```
 L'argument `-p` peut être remplacé par son équivalent `--port`.
+
+
+## Manuel d'utilisation
+
+Nous allons faire un petit guide pour vous aider à utiliser Boomshot.
+
+### Initialisation d'un site statique
+Nous allons créer un site qui s'appelle gymeo. Dans un premier temps, nous exécutons la commande suivante :  
+ ```bash 
+ $ boomshot init gymeo
+ ```
+ Cette commande va créer le dossier du projet gymeo ainsi que sa structure. Ensuite nous allons modifier la page d'accueil `index.md` se trouvant à la racine du dossier `gymeo`.  
+ Les trois première lignes du fchier sont des méta-données et tout ce qui est après les `"---"` sera le contenu de la page.  
+ Exemple de nouvelle page :
+ ```
+ title: Gymeo
+author: Vali la tornade technique
+date: 02.06.2022
+---
+# Bienvenue sur Gymeo le site de gym qui vous permet de faire du sport.
+
+![Une sportive](./images/sportive.jpg)
+ ```
+> **Warning**  
+Le chemin de l'image doit être relatif ou être une URL.   
+
+Afin de garder l'arborescence du site assez propre, nous pouvons créer un dossier `images` afin d'y stocker les images.
+Nous pouvons ensuite modifier/créer plus de page dans le dossier `pages`.   
+Nous pouvons également modifier le fichier contenu dans le dossier `template`. Cela nous permet de modifier le menu du site ainsi que la structure de la page. Voila à quoi ressemble le fichier l'arborescence de notre dossier `gymeo` :
+```
+│   config.yml
+│   index.md
+│
+├───images
+│       sportive.jpg
+│
+├───pages
+│       image.jpeg
+│       page.md
+│
+└───template
+        layout.hbs
+        menu.hbs
+```
+
+### Build notre site
+
+Une fois que nous avons fini avec ces modifications, nous allons build notre projet avec la commande suivante.
+
+```bash
+$ boomshot build gymeo
+```
+Cela va créer le dossier `build` dans le dossier `gymeo`. Ce dossier contiendra les différentes pages du site au format html.
+Cependant, si nous faisons des modifications sur notre site, nous devrions relancer la commande `build`. C'est pourquoi nous pouvons ajouter un tag à la commande `build`.
+```bash
+$ boomshot build gymeo --watch
+```
+Cela aura pour effet de rebuild le site à chaque fois qu'une modification est détectée dans le dossier `gymeo`.
+
+### Visualiser notre site
+
+Afin de visualiser le site dans un navigateur internet, nous allons utiliser la commande suivante :
+
+```bash
+$ boomshot serve gymeo
+```
+Cette commande va créer notre propre serveur web qui va permettre de visualiser notre site. Afin d'arrêter la visualisation, il suffit de taper `exit`.
+
+### Clean notre site
+
+Si, par la suite,  nous souhaitons supprimer le dossier `build`, il nous sufit de lancer la commande `clean`.
+
+```bash
+$ boomshot clean gymeo
+```
