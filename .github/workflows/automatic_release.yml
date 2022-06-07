@@ -1,4 +1,4 @@
-name: Automatic tagged release
+name: "Automatic tagged release"
 
 on:
   push:
@@ -35,6 +35,8 @@ jobs:
     steps:
       - uses: "marvinpinto/action-automatic-releases@latest"
       - name: build release
+        run: |
+          echo "done!"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
