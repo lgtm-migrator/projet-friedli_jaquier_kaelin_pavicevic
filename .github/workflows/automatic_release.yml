@@ -19,6 +19,10 @@ jobs:
         run: mvn install
       - name: build javadoc
         run: mvn javadoc:javadoc
+      - name: zip javadoc and jacoco folders
+      - uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r target/site/apidocs.zip target/site/apidocs && zip -qq -r target/site/jacoco.zip target/site/jacoco
       - name: build release
         run: |
           echo "done!"
@@ -29,7 +33,7 @@ jobs:
           files: |
             CODE_OF_CONDUCT.md
             LICENSE
-            target/site/apidocs
-            target/site/jacoco
+            target/site/apidocs.zip
+            target/site/jacoco.zip
             target/boomshot.zip
             target/*.jar
