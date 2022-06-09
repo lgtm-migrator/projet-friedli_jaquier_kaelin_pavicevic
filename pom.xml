@@ -103,6 +103,9 @@
                                     </limits>
                                 </rule>
                             </rules>
+                            <excludes>
+                                <exclude>ch/heig/dil/watchers/*</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
                     <execution>
