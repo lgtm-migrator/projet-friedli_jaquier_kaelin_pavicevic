@@ -4,16 +4,13 @@ import ch.heig.dil.servers.LocalWebServer;
 import ch.heig.dil.watchers.DirectoryWatcher;
 import ch.heig.dil.watchers.WatcherHandler;
 import io.javalin.core.util.JavalinException;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
-
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "serve", description = "Serve the static website.")
