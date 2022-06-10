@@ -15,7 +15,7 @@ import picocli.CommandLine;
         mixinStandardHelpOptions = true,
         versionProvider = Boomshot.VersionProvide.class,
         description = "A static site generator",
-        subcommands = {Init.class, Clean.class, Build.class, Serve.class})
+        subcommands = {Init.class, Clean.class, Build.class, Serve.class, Publish.class})
 public class Boomshot implements Callable<Integer> {
     public static void main(String[] args) {
         int exitCode = new CommandLine(new Boomshot()).execute(args);
