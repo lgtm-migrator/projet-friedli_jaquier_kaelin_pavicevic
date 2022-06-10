@@ -1,4 +1,6 @@
-# Projet-DIL-Friedli_Jaquier_Kaelin_Pavicevic
+# Boomshot
+
+![boomshot](https://i.imgur.com/xEB3dsq.png)
 
 ## Introduction
 
@@ -8,14 +10,13 @@ librairie [Picocli](https://picocli.info/) qui permet de faire de la génératio
 sites statiques (SSG) à l'instar de [Gatsby](https://www.gatsbyjs.com/)
 ou [Hugo](https://gohugo.io/).
 
-Un portfolio décrivant notamment la méthodologie utilisée tout au long de ce projet
-ainsi que les divers choix de processus logiciels réalisés est disponible à l'adresse
-suivante: [Portfolio](https://github.com/dil-classroom/projet-friedli_jaquier_kaelin_pavicevic/wiki/Portfolio)
-
 ## Stack
 
 * [Java 11](https://adoptium.net/?variant=openjdk11&jvmVariant=hotspot)
+* [Maven](https://maven.apache.org/)
 * [Picocli](https://picocli.info/)
+* [Javalin](https://javalin.io/)
+* [Git](https://git-scm.com/)
 
 ## Fonctionnalités
 
@@ -84,6 +85,8 @@ Exemple de contenu du dossier monNouveauSiteStatique après l'exécution de la c
         menu.hbs
 ```
 
+Ci-joint le diagramme d'activité de la commande [`init`](/diagrams/InitActivityDiagram.png)
+
 ### `build`
 
 Description : Cette command permet de créer le sous-dossier build, dans le dossier monNouveauSiteStatique, contenant les différentes pages du site.
@@ -139,6 +142,24 @@ Exemple :
 boomshot serve monNouveauSiteStatique [-p 8888]
 ```
 L'argument `-p` peut être remplacé par son équivalent `--port`.
+
+Ci-joint le diagramme d'activité de la commande [`serve`](/diagrams/ServeActivityDiagram.png)
+
+### `publish`
+
+Description : Cette commande permet de publier le dossier `build` sur un repository Github.
+
+Elle demande plusieurs arguments :
+* `token` : Il s'agit d'un [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) qui permet d'effectuer des opérations sur un repository Github.
+* `remotePath` : Le lien du repository Github sur lequel on souhaite publier notre site.
+* `buildPath` : Le chemin du dossier build à publier.
+* `gitPath` : Le chemin du dossier .git clôné localement sur la machine qui fournit toutes les informations sur le DAG de notre repository.
+
+Exemple :
+
+```bash
+boomshot publish my-token https://github.com/johndoe/my-repo monNouveauSiteStatique\build my-repository\.git
+```
 
 
 ## Manuel d'utilisation
@@ -206,6 +227,15 @@ Afin de visualiser le site dans un navigateur internet, nous allons utiliser la 
 $ boomshot serve gymeo
 ```
 Cette commande va créer notre propre serveur web qui va permettre de visualiser notre site. Afin d'arrêter la visualisation, il suffit de taper `exit`.
+
+### Publier notre site
+
+Pour publier le site, nous allons utiliser la commande suivante :
+
+```bash
+$ boomshot publish <PAT> https://github.com/johndoe/gymeo-static gymeo/build <path_du_repo>/gymeo-static/.git
+```
+Nos pages générées avec la commande `build` sont maintenant publiées sur le repository Github `gymeo-static`.
 
 ### Clean notre site
 
