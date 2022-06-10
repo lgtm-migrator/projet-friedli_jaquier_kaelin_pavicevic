@@ -22,12 +22,14 @@ import picocli.CommandLine;
 @CommandLine.Command(name = "build", description = "Build the static website.")
 public class Build implements Callable<Integer> {
 
+    public static final String BUILD_FOLDER = "build";
+
     @CommandLine.Parameters(index = "0", description = "Source of the static website")
     private Path sourcePath;
 
     @Override
     public Integer call() throws IOException {
-        Path out = sourcePath.resolve("build");
+        Path out = sourcePath.resolve(BUILD_FOLDER);
 
         // Parse la configuration
         Map<String, String> config = ParserYAML.parseConfig(sourcePath);
@@ -54,7 +56,7 @@ public class Build implements Callable<Integer> {
                                         // Sauvegarde du fichier html
                                         Path target =
                                                 sourcePath
-                                                        .resolve("build")
+                                                        .resolve(BUILD_FOLDER)
                                                         .resolve(
                                                                 sourcePath
                                                                         .relativize(source)

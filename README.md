@@ -53,10 +53,11 @@ A static site generator
   -h, --help      Show this help message and exit.
   -V, --version   Print version information and exit.
 Commands:
-  new    Init a new static website.
-  clean  Clean the generated content.
-  build  Build the static website.
-  serve  Serve the static website.
+  new     Init a new static website.
+  clean   Clean the generated content.
+  build   Build the static website.
+  serve   Serve the static website.
+  publish Publish the folder to a github repository.
 ```
 
 ## Commandes disponibles
@@ -152,13 +153,12 @@ Description : Cette commande permet de publier le dossier `build` sur un reposit
 Elle demande plusieurs arguments :
 * `token` : Il s'agit d'un [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) qui permet d'effectuer des opérations sur un repository Github.
 * `remotePath` : Le lien du repository Github sur lequel on souhaite publier notre site.
-* `buildPath` : Le chemin du dossier build à publier.
-* `gitPath` : Le chemin du dossier .git clôné localement sur la machine qui fournit toutes les informations sur le DAG de notre repository.
+* `repoPath` : La racine du dossier clôné du repository distant.
 
 Exemple :
 
 ```bash
-boomshot publish my-token https://github.com/johndoe/my-repo monNouveauSiteStatique\build my-repository\.git
+boomshot publish my-token https://github.com/johndoe/my-repo D:\code\my-repo
 ```
 
 
@@ -230,10 +230,14 @@ Cette commande va créer notre propre serveur web qui va permettre de visualiser
 
 ### Publier notre site
 
+> **Warning**  
+Il est important d'avoir effectué la commande `build` dans le repository qui nous intéresse avant de publier. 
+Le dossier local doit être issu d'un clone du repository distant.
+
 Pour publier le site, nous allons utiliser la commande suivante :
 
 ```bash
-$ boomshot publish <PAT> https://github.com/johndoe/gymeo-static gymeo/build <path_du_repo>/gymeo-static/.git
+$ boomshot publish <PAT> https://github.com/johndoe/gymeo-static <path_du_repo>/gymeo-static
 ```
 Nos pages générées avec la commande `build` sont maintenant publiées sur le repository Github `gymeo-static`.
 

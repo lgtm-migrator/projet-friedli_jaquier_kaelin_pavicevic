@@ -9,21 +9,18 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import picocli.CommandLine;
 
-@CommandLine.Command(name = "publish", description = "Publish the folder to Github")
+@CommandLine.Command(name = "publish", description = "Publish the folder to a github repository.")
 public class Publish implements Callable<Integer> {
     @CommandLine.Parameters(
             index = "0",
             description = "Personal access token from Github's account")
     String token;
 
-    @CommandLine.Parameters(index = "1", description = "Remote repository url")
+    @CommandLine.Parameters(index = "1", description = "Remote repository URL")
     String remotePath;
 
-    @CommandLine.Parameters(index = "2", description = "Build folder path")
-    String buildPath;
-
-    @CommandLine.Parameters(index = "3", description = ".git folder path")
-    String gitPath;
+    @CommandLine.Parameters(index = "2", description = "Cloned root folder from remote repository")
+    String repoPath;
 
     @Override
     public Integer call() {
@@ -32,10 +29,12 @@ public class Publish implements Callable<Integer> {
             CredentialsProvider credentialsProvider =
                     new UsernamePasswordCredentialsProvider(token, "");
             Repository repository =
-                    builder.setGitDir(new File(gitPath)).readEnvironment().findGitDir().build();
-
+                    builder.setGitDir(new File(repoPath + "/.git"))
+                            .readEnvironment()
+                            .findGitDir()
+                            .build();
             Git git = new Git(repository);
-            git.add().addFilepattern(buildPath + " .").call();
+            git.add().addFilepattern(Build.BUILD_FOLDER).setUpdate(true).call();
             git.commit().setSign(false).setMessage("Publish build folder").call();
             git.push().setRemote(remotePath).setCredentialsProvider(credentialsProvider).call();
         } catch (Exception e) {
