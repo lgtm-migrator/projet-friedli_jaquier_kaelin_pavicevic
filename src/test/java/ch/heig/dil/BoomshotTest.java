@@ -38,16 +38,18 @@ class BoomshotTest {
 
     @Test
     void testGetVersion() throws Exception {
+        final String OPEN_TAG = "<version>";
+        final String CLOSING_TAG = "</version>";
         Boomshot.VersionProvide versionProvide = new Boomshot.VersionProvide();
         String pomContent = FilesHelper.readFromFile("pom.xml");
-        assertTrue(pomContent != null);
-        String testVers =
+        String configVersion =
                 pomContent.substring(
-                        pomContent.indexOf("<version>") + 9, pomContent.indexOf("</version>"));
+                        pomContent.indexOf(OPEN_TAG) + OPEN_TAG.length(),
+                        pomContent.indexOf(CLOSING_TAG));
         String[] rawVersion = versionProvide.getVersion();
         String[] version = rawVersion[0].split(" ");
         assertEquals(version[0], "Boomshot");
 
-        assertEquals(version[1], testVers);
+        assertEquals(version[1], configVersion);
     }
 }
