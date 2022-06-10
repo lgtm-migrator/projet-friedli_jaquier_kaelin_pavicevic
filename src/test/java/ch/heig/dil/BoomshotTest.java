@@ -48,7 +48,7 @@ class BoomshotTest {
                         pomContent.indexOf(CLOSING_TAG));
         String[] rawVersion = versionProvide.getVersion();
         String[] generatedVersion = rawVersion[0].split(" ");
-        assertEquals(version[0], "Boomshot");
+        assertEquals(generatedVersion[0], "Boomshot");
 
         assertEquals(generatedVersion[1], configVersion);
     }
