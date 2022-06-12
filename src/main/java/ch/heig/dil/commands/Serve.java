@@ -1,12 +1,16 @@
 package ch.heig.dil.commands;
 
 import ch.heig.dil.servers.LocalWebServer;
+import ch.heig.dil.watchers.DirectoryWatcher;
+import ch.heig.dil.watchers.WatcherHandler;
 import io.javalin.core.util.JavalinException;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.WatchEvent;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "serve", description = "Serve the static website.")
@@ -25,21 +29,43 @@ public class Serve implements Callable<Integer> {
             defaultValue = "8080")
     private int port;
 
+    @CommandLine.Option(
+            names = {"-w", "--watch"},
+            paramLabel = "WATCH",
+            arity = "0..1",
+            description = "Watch for the file changes")
+    private boolean watch = false;
+
     @Override
-    public Integer call() throws IllegalArgumentException, JavalinException {
+    public Integer call() throws IllegalArgumentException, JavalinException, IOException {
         new CommandLine(new Build()).execute(path.toString());
 
-        path = Paths.get(path.toString(), "/build");
-        if (!Files.isDirectory(path)) {
+        Path out = path.resolve("build");
+        if (!Files.isDirectory(out)) {
             System.err.println("The directory doesn't exist.");
             return CommandLine.ExitCode.USAGE;
         }
 
         LocalWebServer server;
         try {
-            server = new LocalWebServer(port, path.toString());
+            server = new LocalWebServer(port, out.toString());
         } catch (Exception e) {
             return -1;
+        }
+
+        if (watch) {
+            WatcherHandler handler =
+                    new WatcherHandler() {
+                        @Override
+                        public void handle(WatchEvent<?> event) {
+                            System.out.println("File changed, rebuilding...");
+                            new CommandLine(new Build()).execute(path.toString());
+                            System.out.println("Static website rebuilt.");
+                        }
+                    };
+            DirectoryWatcher watcher = new DirectoryWatcher(path, handler, true, false);
+            watcher.addIgnoredFile(out);
+            CompletableFuture.runAsync(watcher::processEvents);
         }
 
         server.start();

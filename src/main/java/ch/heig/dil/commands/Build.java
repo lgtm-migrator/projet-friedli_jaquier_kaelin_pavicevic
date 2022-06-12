@@ -4,11 +4,11 @@ import ch.heig.dil.files.FilesHelper;
 import ch.heig.dil.parsers.MarkdownParser;
 import ch.heig.dil.parsers.PageParser;
 import ch.heig.dil.parsers.ParserYAML;
+import ch.heig.dil.watchers.DirectoryWatcher;
+import ch.heig.dil.watchers.WatcherHandler;
 import com.github.jknack.handlebars.Template;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.stream.Stream;
@@ -27,10 +27,38 @@ public class Build implements Callable<Integer> {
     @CommandLine.Parameters(index = "0", description = "Source of the static website")
     private Path sourcePath;
 
+    @CommandLine.Option(
+            names = {"-w", "--watch"},
+            paramLabel = "WATCH",
+            arity = "0..1",
+            description = "Watch for the file changes")
+    private boolean watch = false;
+
     @Override
     public Integer call() throws IOException {
         Path out = sourcePath.resolve(BUILD_FOLDER);
+        buildFiles(out);
+        System.out.println("Static website built.");
 
+        if (watch) {
+            WatcherHandler handler =
+                    new WatcherHandler() {
+                        @Override
+                        public void handle(WatchEvent<?> event) throws IOException {
+                            System.out.println("File changed, rebuilding...");
+                            buildFiles(out);
+                            System.out.println("Static website rebuilt.");
+                        }
+                    };
+            DirectoryWatcher watcher = new DirectoryWatcher(sourcePath, handler, true, false);
+            watcher.addIgnoredFile(out);
+            watcher.processEvents();
+        }
+
+        return CommandLine.ExitCode.OK;
+    }
+
+    private void buildFiles(Path out) throws IOException {
         // Parse la configuration
         Map<String, String> config = ParserYAML.parseConfig(sourcePath);
 
@@ -46,7 +74,6 @@ public class Build implements Callable<Integer> {
                     .filter(p -> !p.toString().contains(ParserYAML.CONFIG_FILE))
                     .forEach(
                             source -> {
-                                System.out.println("--> " + source);
                                 Path destination = out.resolve(sourcePath.relativize(source));
                                 try {
                                     Files.createDirectories(destination.getParent());
@@ -75,8 +102,5 @@ public class Build implements Callable<Integer> {
                                 }
                             });
         }
-        System.out.println("Static website built.");
-
-        return CommandLine.ExitCode.OK;
     }
 }

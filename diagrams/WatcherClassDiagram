@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="iso-8859-15" standalone="no"?>
+<classDiagram>
+  <diagramElements defaultViewEntities="ALL" defaultViewEnum="true" defaultViewMethods="TYPE_AND_NAME" defaultVisibleTypes="true" informations="" name="Watchers">
+    <inheritance id="97986">
+      <child>97159</child>
+      <parent>97738</parent>
+    </inheritance>
+    <inheritance id="97985">
+      <child>97158</child>
+      <parent>97738</parent>
+    </inheritance>
+    <entity entityType="INTERFACE" id="97738" isAbstract="true" name="Callable&lt;integer&gt;" visibility="PUBLIC">
+      <method isAbstract="true" isStatic="false" name="call" returnType="Integer" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <association aggregation="NONE" direction="FIRST_TO_SECOND" id="97246" name="">
+      <role componentId="97157" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>1</min>
+          <max>1</max>
+        </multiplicity>
+      </role>
+      <role componentId="97123" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>1</min>
+          <max>1</max>
+        </multiplicity>
+      </role>
+    </association>
+    <entity entityType="CLASS" id="97159" isAbstract="false" name="Serve" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="path" type="Path" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="port" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="watch" type="boolean" visibility="PRIVATE"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="Serve" returnType="" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="call" returnType="Integer" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <entity entityType="CLASS" id="97158" isAbstract="false" name="Build" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="sourcePath" type="Path" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="watch" type="boolean" visibility="PRIVATE"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="Build" returnType="" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="call" returnType="Integer" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="buildFiles" returnType="void" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="out" type="Path"/>
+      </method>
+    </entity>
+    <entity entityType="CLASS" id="97157" isAbstract="false" name="DirectoryWatcher" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="watcher" type="WatchService" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="keys" type="Map&lt;WatchKey,Path&gt;" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="ignoredFiles" type="List&lt;Path&gt;" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="recursive" type="boolean" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="debug" type="boolean" visibility="PRIVATE"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="DirectoryWatcher" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="dir" type="Path"/>
+        <variable const="false" name="handler" type="WatcherHandler"/>
+        <variable const="false" name="recursive" type="boolean"/>
+        <variable const="false" name="debug" type="boolean"/>
+      </method>
+      <method isAbstract="false" isStatic="true" name="cast" returnType="WatchEvent&lt;T&gt;" view="DEFAULT" visibility="PACKAGE">
+        <variable const="false" name="event" type="WatchEvent&lt;?&gt;"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="register" returnType="void" view="DEFAULT" visibility="PRIVATE">
+        <variable const="false" name="dir" type="Path"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="registerAll" returnType="void" view="DEFAULT" visibility="PRIVATE">
+        <variable const="false" name="start" type="Path"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="processEvent" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="addIgnoredFile" returnType="void" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="file" type="Path"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="stop" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <entity entityType="CLASS" id="97123" isAbstract="true" name="WatcherHandler" visibility="PUBLIC">
+      <method isAbstract="true" isStatic="false" name="handle" returnType="void" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="event" type="WatchEvent&lt;?&gt;"/>
+      </method>
+    </entity>
+  </diagramElements>
+  <umlView grid="10" name="Main view" open="true">
+    <relationView color="-12566464" relationId="97246">
+      <line>
+        <point>
+          <x>481</x>
+          <y>121</y>
+        </point>
+        <point>
+          <x>341</x>
+          <y>121</y>
+        </point>
+      </line>
+      <labelAssociation>
+        <x>415</x>
+        <y>125</y>
+        <w>0</w>
+        <h>16</h>
+      </labelAssociation>
+      <roleAssociation>
+        <x>445</x>
+        <y>125</y>
+        <w>0</w>
+        <h>16</h>
+      </roleAssociation>
+      <roleAssociation>
+        <x>345</x>
+        <y>125</y>
+        <w>0</w>
+        <h>16</h>
+      </roleAssociation>
+      <multipliciteAssociation>
+        <x>467</x>
+        <y>99</y>
+        <w>8</w>
+        <h>16</h>
+      </multipliciteAssociation>
+      <multipliciteAssociation>
+        <x>345</x>
+        <y>99</y>
+        <w>8</w>
+        <h>16</h>
+      </multipliciteAssociation>
+    </relationView>
+    <relationView color="-12566464" relationId="97985">
+      <line>
+        <point>
+          <x>1171</x>
+          <y>361</y>
+        </point>
+        <point>
+          <x>1171</x>
+          <y>331</y>
+        </point>
+        <point>
+          <x>1271</x>
+          <y>331</y>
+        </point>
+        <point>
+          <x>1271</x>
+          <y>285</y>
+        </point>
+      </line>
+    </relationView>
+    <relationView color="-12566464" relationId="97986">
+      <line>
+        <point>
+          <x>1351</x>
+          <y>361</y>
+        </point>
+        <point>
+          <x>1351</x>
+          <y>331</y>
+        </point>
+        <point>
+          <x>1271</x>
+          <y>331</y>
+        </point>
+        <point>
+          <x>1271</x>
+          <y>285</y>
+        </point>
+      </line>
+    </relationView>
+    <componentView color="-2079" componentID="97123" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>100</x>
+        <y>100</y>
+        <w>240</w>
+        <h>70</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="97157" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>480</x>
+        <y>100</y>
+        <w>540</w>
+        <h>235</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="97158" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>1080</x>
+        <y>360</y>
+        <w>180</w>
+        <h>130</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="97159" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>1270</x>
+        <y>360</y>
+        <w>150</w>
+        <h>130</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="97738" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>1190</x>
+        <y>200</y>
+        <w>150</w>
+        <h>84</h>
+      </geometry>
+    </componentView>
+  </umlView>
+</classDiagram>

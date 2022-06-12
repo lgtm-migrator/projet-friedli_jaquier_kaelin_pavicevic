@@ -43,7 +43,6 @@ public class ParserYAML {
             meta.put(parser.getCurrentName(), parser.getText());
         }
         meta.remove(null);
-        System.out.println(meta);
         return meta;
     }
 }

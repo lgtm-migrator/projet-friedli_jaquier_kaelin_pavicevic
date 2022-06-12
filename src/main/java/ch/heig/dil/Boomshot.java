@@ -28,7 +28,7 @@ public class Boomshot implements Callable<Integer> {
         return 0;
     }
 
-    /** Classe interne permettant de récuper la version du projet dans le pom.xml */
+    /** Classe interne permettant de récuperer la version du projet dans le pom.xml */
     static class VersionProvide implements CommandLine.IVersionProvider {
 
         /**
