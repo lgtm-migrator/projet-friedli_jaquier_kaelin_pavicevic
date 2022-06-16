@@ -64,14 +64,17 @@ Commands:
 
 ### `init`
 
-Description : Cette commande permet d'initialiser un site statique dans le dossier de notre choix. Pour ce faire, il suffit de passer en argument le chemin relatif du dossier dans lequel on veut stocker notre site. Cela va permettre de créer/enrichir ce dossier. A l'intérieur de ce dernier, on trouvera un dossier contenant les différentes pages du site en format markdown, un dossier de templating, le fichier config.yml contenant des informations sur le site et la page d'accueil du site également au format markdown.  
+Description : Cette commande permet d'initialiser un site statique dans le 
+dossier de notre choix. Pour ce faire, il suffit de passer en argument le chemin 
+absolu du dossier dans lequel on veut stocker notre site. Cela va permettre de 
+créer/enrichir ce dossier. A l'intérieur de ce dernier, on trouvera un dossier contenant les différentes pages du site en format markdown, un dossier de templating, le fichier config.yml contenant des informations sur le site et la page d'accueil du site également au format markdown.  
 
 Exemple :
 
 ```bash
-boomshot init monNouveauSiteStatique
+boomshot init /Users/bob/code/monNouveauSiteStatique
 ```
-Cette commande va initialiser le site dans le dossier /monNouveauSiteStatique.
+Cette commande va initialiser le site dans le dossier /Users/bob/code/monNouveauSiteStatique.
 Exemple de contenu du dossier monNouveauSiteStatique après l'exécution de la commande :
 ```
 │   config.yml
@@ -91,11 +94,12 @@ Ci-joint le diagramme d'activité de la commande [`init`](/diagrams/InitActivity
 ### `build`
 
 Description : Cette command permet de créer le sous-dossier build, dans le dossier monNouveauSiteStatique, contenant les différentes pages du site.
+Le chemin du site doit être absolu.
 
 Exemple :
 
 ```bash
-boomshot build monNouveauSiteStatique
+boomshot build /Users/bob/code/monNouveauSiteStatique
 ```
 Si le dossier monNouveauSiteStatique n'existe pas (commande init pas effectuée ou dossier supprimé), cela produira une erreur.  
 
@@ -122,12 +126,12 @@ Exemple de contenu du dossier monNouveauSiteStatique après l'exécution de la c
 
 ### `clean`
 
-Description : Cette commande permet de supprimer le dossier monNouveauSiteStatique/build
+Description : Cette commande permet de supprimer le dossier /Users/bob/code/monNouveauSiteStatique/build
 
 Exemple :
 
 ```bash
-boomshot clean monNouveauSiteStatique
+boomshot clean /Users/bob/code/monNouveauSiteStatique
 ```
 
 Le dossier monNouveauSiteStatique est censé être pareil qu'après l'exécution de la commande ```init```.
@@ -140,7 +144,7 @@ Afin de quitter la visualisation, il suffit de taper `exit`.
 Exemple :
 
 ```bash
-boomshot serve monNouveauSiteStatique [-p 8888]
+boomshot serve /Users/bob/code/monNouveauSiteStatique [-p 8888]
 ```
 L'argument `-p` peut être remplacé par son équivalent `--port`.
 
@@ -169,10 +173,13 @@ Nous allons faire un petit guide pour vous aider à utiliser Boomshot.
 ### Initialisation d'un site statique
 Nous allons créer un site qui s'appelle gymeo. Dans un premier temps, nous exécutons la commande suivante :  
  ```bash 
- $ boomshot init gymeo
+ $ boomshot init /Users/bob/code/gymeo
  ```
- Cette commande va créer le dossier du projet gymeo ainsi que sa structure. Ensuite nous allons modifier la page d'accueil `index.md` se trouvant à la racine du dossier `gymeo`.  
- Les trois première lignes du fchier sont des méta-données et tout ce qui est après les `"---"` sera le contenu de la page.  
+ Cette commande va créer le dossier du projet gymeo ainsi que sa structure à 
+ l'endroit souhaité. 
+ Ensuite nous allons modifier la page d'accueil `index.md` se trouvant à la racine du dossier `gymeo`.  
+ Les trois premières lignes du fichier sont des méta-données et tout ce qui est 
+ après les `"---"` sera le contenu de la page.  
  Exemple de nouvelle page :
  ```
  title: Gymeo
@@ -210,12 +217,12 @@ Nous pouvons également modifier le fichier contenu dans le dossier `template`. 
 Une fois que nous avons fini avec ces modifications, nous allons build notre projet avec la commande suivante.
 
 ```bash
-$ boomshot build gymeo
+$ boomshot build /Users/bob/code/gymeo
 ```
 Cela va créer le dossier `build` dans le dossier `gymeo`. Ce dossier contiendra les différentes pages du site au format html.
 Cependant, si nous faisons des modifications sur notre site, nous devrions relancer la commande `build`. C'est pourquoi nous pouvons ajouter un tag à la commande `build`.
 ```bash
-$ boomshot build gymeo --watch
+$ boomshot build /Users/bob/code/gymeo --watch
 ```
 Cela aura pour effet de rebuild le site à chaque fois qu'une modification est détectée dans le dossier `gymeo`.
 
@@ -224,7 +231,7 @@ Cela aura pour effet de rebuild le site à chaque fois qu'une modification est d
 Afin de visualiser le site dans un navigateur internet, nous allons utiliser la commande suivante :
 
 ```bash
-$ boomshot serve gymeo
+$ boomshot serve /Users/bob/code/gymeo
 ```
 Cette commande va créer notre propre serveur web qui va permettre de visualiser notre site. Afin d'arrêter la visualisation, il suffit de taper `exit`.
 
@@ -243,8 +250,9 @@ Nos pages générées avec la commande `build` sont maintenant publiées sur le 
 
 ### Clean notre site
 
-Si, par la suite,  nous souhaitons supprimer le dossier `build`, il nous sufit de lancer la commande `clean`.
+Si, par la suite, nous souhaitons supprimer le dossier `build`, il nous suffit de 
+lancer la commande `clean`.
 
 ```bash
-$ boomshot clean gymeo
+$ boomshot clean /Users/bob/code/gymeo
 ```

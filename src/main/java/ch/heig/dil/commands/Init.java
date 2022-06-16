@@ -2,9 +2,7 @@ package ch.heig.dil.commands;
 
 import ch.heig.dil.files.FilesHelper;
 import java.net.URI;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -19,7 +17,7 @@ import picocli.CommandLine;
 public class Init implements Callable<Integer> {
     private static final String TEMPLATES_PATH = "/templates/init";
 
-    @CommandLine.Parameters(description = "Path of the static website")
+    @CommandLine.Parameters(description = "Absolute path of the static website")
     Path path;
 
     @Override
