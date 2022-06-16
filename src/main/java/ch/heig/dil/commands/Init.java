@@ -1,7 +1,10 @@
 package ch.heig.dil.commands;
 
 import ch.heig.dil.files.FilesHelper;
-import java.nio.file.Path;
+import java.net.URI;
+import java.nio.file.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
 
@@ -14,14 +17,25 @@ import picocli.CommandLine;
 public class Init implements Callable<Integer> {
     private static final String TEMPLATES_PATH = "/templates/init";
 
-    @CommandLine.Parameters(description = "Path of the static website")
-    String path;
+    @CommandLine.Parameters(description = "Absolute path of the static website")
+    Path path;
 
     @Override
     public Integer call() {
         try {
-            Path templateRessource = FilesHelper.getRessourcePath(TEMPLATES_PATH);
-            FilesHelper.copyDirectory(templateRessource.toString(), path);
+            // Path templateRessource = FilesHelper.getRessourcePath(TEMPLATES_PATH);
+
+            URI uri = this.getClass().getResource(TEMPLATES_PATH).toURI();
+
+            // Initialize a zip file system when the template is stored in a jar file
+            if (uri.getScheme().equals("jar")) {
+                Map<String, String> env = new HashMap<>();
+                env.put("create", "true");
+                FileSystems.newFileSystem(uri, env);
+            }
+
+            Path template = Paths.get(uri);
+            FilesHelper.copyDirectory(template, path);
             System.out.println("Website initialized.");
         } catch (Exception ex) {
             return 1;

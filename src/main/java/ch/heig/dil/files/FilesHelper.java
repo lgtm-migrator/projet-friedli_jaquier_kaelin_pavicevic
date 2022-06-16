@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Comparator;
 
 /**
@@ -82,23 +83,26 @@ public class FilesHelper {
     /**
      * Copie un dossier récursivement
      *
-     * @param sourceLocation : dossier source
-     * @param destinationLocation : dossier de destination
+     * @param from : chemin du dossier source
+     * @param dest : chemin du dossier de destination
      * @throws IOException en cas d'erreur lors de la copie d'un fichier
      */
-    public static void copyDirectory(String sourceLocation, String destinationLocation)
-            throws IOException {
-        Files.walk(Paths.get(sourceLocation))
+    public static void copyDirectory(Path from, Path dest) throws IOException {
+        Files.walk(from)
                 .forEach(
                         source -> {
-                            Path destination =
-                                    Paths.get(
-                                            destinationLocation,
-                                            source.toString().substring(sourceLocation.length()));
                             try {
-                                Files.copy(source, destination);
+                                if (Files.isRegularFile(source)) {
+                                    // The FileSystem (file or jar) is inferred by the path.
+                                    // As we copy files from the jar to the filesystem,
+                                    // the toString method is called to prevent a wrong inference.
+                                    Path target = dest.resolve(from.relativize(source).toString());
+                                    System.out.println("target: " + target);
+                                    Files.createDirectories(target.getParent());
+                                    Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+                                }
                             } catch (IOException e) {
-                                e.printStackTrace();
+                                throw new RuntimeException(e);
                             }
                         });
     }
