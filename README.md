@@ -1,5 +1,8 @@
 # Boomshot
 
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/dil-classroom/projet-friedli_jaquier_kaelin_pavicevic.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dil-classroom/projet-friedli_jaquier_kaelin_pavicevic/alerts/)
+[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/dil-classroom/projet-friedli_jaquier_kaelin_pavicevic.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dil-classroom/projet-friedli_jaquier_kaelin_pavicevic/context:java)
+
 ![boomshot](https://i.imgur.com/xEB3dsq.png)
 
 ## Introduction
